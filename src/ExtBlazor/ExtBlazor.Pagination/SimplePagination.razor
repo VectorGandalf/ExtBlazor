@@ -1,0 +1,17 @@
+<nav aria-label="Page navigation" class="@NavCssClass">
+    <button class="@ButtonCssClass" @onclick="Pagination.First">&#171;</button>
+    <button class="@ButtonCssClass" @onclick="Pagination.Previous">&#8249;</button>
+    @foreach (var page in Pagination.GetWindow(Padding))
+    {
+        if (page != Pagination.CurrentPage)
+        {
+            <button class="@ButtonCssClass" id="page-@(page)" @onclick="() => Pagination.SetPage(page)">@(page)</button>
+        }
+        else
+        {
+            <button class="@ButtonCssClass @ActiveCssClass">@(page)</button>
+        }
+    }
+    <button class="@ButtonCssClass" @onclick="Pagination.Next">&#8250;</button>
+    <button class="@ButtonCssClass" @onclick="Pagination.Last">&#187;</button>
+</nav>

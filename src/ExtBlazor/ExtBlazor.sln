@@ -3,15 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Demo", "ExtBlazor.Demo\ExtBlazor.Demo\ExtBlazor.Demo.csproj", "{6B8212F9-5C53-4535-BBE9-1FB66382A2F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Demo", "ExtBlazor.Demo\ExtBlazor.Demo\ExtBlazor.Demo.csproj", "{6B8212F9-5C53-4535-BBE9-1FB66382A2F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Demo.Client", "ExtBlazor.Demo\ExtBlazor.Demo.Client\ExtBlazor.Demo.Client.csproj", "{8CBB71A2-B5A5-40F6-886D-062AECFF998A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Demo.Client", "ExtBlazor.Demo\ExtBlazor.Demo.Client\ExtBlazor.Demo.Client.csproj", "{8CBB71A2-B5A5-40F6-886D-062AECFF998A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Core", "ExtBlazor.Core\ExtBlazor.Core.csproj", "{08DC4A80-EBB6-4E0D-A97E-784965648BE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Core", "ExtBlazor.Core\ExtBlazor.Core.csproj", "{08DC4A80-EBB6-4E0D-A97E-784965648BE7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{6E4BD9ED-79B6-430D-B886-29B8CA138715}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{C5031986-607C-4936-B42F-7A38DADBE2DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Grid", "ExtBlazor.Grid\ExtBlazor.Grid.csproj", "{189F875B-814F-4106-91C1-999004CF8690}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Paginators", "ExtBlazor.Pagination\ExtBlazor.Paginators.csproj", "{4255251E-5A3B-4639-BFF8-D75639DDFF02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{48B63061-C36B-4FD3-9AC7-810E826E5125}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Tests.Units", "ExtBlazor.Tests.Units\ExtBlazor.Tests.Units.csproj", "{8A782864-A1D2-4FD9-87ED-F026CD5AAEC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Core.Server", "ExtBlazor.Core.Server\ExtBlazor.Core.Server.csproj", "{8DA2A35E-5013-4602-A4A2-9D93B7EB7EFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +41,22 @@ Global
 		{08DC4A80-EBB6-4E0D-A97E-784965648BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08DC4A80-EBB6-4E0D-A97E-784965648BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08DC4A80-EBB6-4E0D-A97E-784965648BE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{189F875B-814F-4106-91C1-999004CF8690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{189F875B-814F-4106-91C1-999004CF8690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{189F875B-814F-4106-91C1-999004CF8690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{189F875B-814F-4106-91C1-999004CF8690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4255251E-5A3B-4639-BFF8-D75639DDFF02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4255251E-5A3B-4639-BFF8-D75639DDFF02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4255251E-5A3B-4639-BFF8-D75639DDFF02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4255251E-5A3B-4639-BFF8-D75639DDFF02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A782864-A1D2-4FD9-87ED-F026CD5AAEC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A782864-A1D2-4FD9-87ED-F026CD5AAEC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A782864-A1D2-4FD9-87ED-F026CD5AAEC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A782864-A1D2-4FD9-87ED-F026CD5AAEC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DA2A35E-5013-4602-A4A2-9D93B7EB7EFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DA2A35E-5013-4602-A4A2-9D93B7EB7EFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DA2A35E-5013-4602-A4A2-9D93B7EB7EFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DA2A35E-5013-4602-A4A2-9D93B7EB7EFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +65,10 @@ Global
 		{6B8212F9-5C53-4535-BBE9-1FB66382A2F4} = {C5031986-607C-4936-B42F-7A38DADBE2DE}
 		{8CBB71A2-B5A5-40F6-886D-062AECFF998A} = {C5031986-607C-4936-B42F-7A38DADBE2DE}
 		{08DC4A80-EBB6-4E0D-A97E-784965648BE7} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
+		{189F875B-814F-4106-91C1-999004CF8690} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
+		{4255251E-5A3B-4639-BFF8-D75639DDFF02} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
+		{8A782864-A1D2-4FD9-87ED-F026CD5AAEC9} = {48B63061-C36B-4FD3-9AC7-810E826E5125}
+		{8DA2A35E-5013-4602-A4A2-9D93B7EB7EFF} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0756067-DC2E-41F0-A1B9-6D4D701B5B74}

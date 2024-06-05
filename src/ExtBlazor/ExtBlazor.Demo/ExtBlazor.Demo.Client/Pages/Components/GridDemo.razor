@@ -1,0 +1,88 @@
+﻿@using ExtBlazor.Core
+@using ExtBlazor.Paginators
+@inject HttpClient httpClient
+<h2>Grid demo 1</h2>
+<p>
+    Simple grid demo.
+</p>
+<div class="input-group w-50">
+    <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
+    <button class="btn btn-primary" @onclick=UpdateItems>Search</button>
+</div>
+<Grid Items="items" OnColumnEvent="_ => HandleColumnEvent(_)" CssClass="table table-striped w-100">
+    <PropertyColumn Property="_ => _.Id" />
+    <PropertyColumn Property="_ => _.Name" />
+    <PropertyColumn Property="_ => _.Username" />
+    <PropertyColumn Property="_ => _.Email" Title="E-Mail" />
+    <PropertyColumn Property="_ => _.Phone" Format="@(_ => _.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " "))" />
+    <PropertyColumn Property="_ => _.Created" Format="@(_ => _.ToString("yyyy-MM-dd"))" />
+    <PropertyColumn Property="_ => _.LastLogin" Title="Last login" Format="@(_ => _?.ToString("yyyy-MM-dd HH:mm"))" />
+</Grid>
+<SimplePagination Pagination="pagination" Padding="5" NavCssClass="pagination" ActiveCssClass="active" ButtonCssClass="page-item page-link" />
+@code
+{
+    private Pagination pagination = new()
+        {
+            Take = 10,
+            Skip = 0,
+            TotalCount = 0
+        };
+
+    private GetUsersQuery query = new()
+        {
+            Asc = true,
+            SortExp = "Name"
+        };
+
+    protected override async Task OnInitializedAsync()
+    {
+        pagination.OnCurrentPageChanged += async (o, e) => await OnCurrentPageChanged(o, e)!;
+        await UpdateItems();
+        await base.OnInitializedAsync();
+    }
+
+    private IEnumerable<User> items = [];
+
+    private async Task HandleColumnEvent(IColumnEventArgs data)
+    {
+        if (data is SortEventData sortData)
+        {
+            query.Asc = sortData.Ascending != null
+                ? sortData.Ascending
+                : query.SortExp != sortData.SortExpression
+                    ? true
+                    : !query.Asc;
+
+            query.SortExp = sortData.SortExpression;
+
+            await UpdateItems();
+        }
+    }
+
+    private async Task OnCurrentPageChanged(object obj, EventArgs args)
+    {
+        query.Skip = pagination.Skip;
+        query.Take = pagination.Take;
+        await UpdateItems();
+    }
+
+    private async Task UpdateItems()
+    {
+        var url = $"api/users" + query.ToQueryString();
+        var pagedSet = await httpClient.GetFromJsonAsync<PagedSet<User>>(url);
+        if (pagedSet != null)
+        {
+            pagination.SetTotalNumberOfItem(pagedSet.Total);
+            items = pagedSet.Items;
+            StateHasChanged();
+        }
+    }
+
+    private async Task Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await UpdateItems();
+        }
+    }
+}
