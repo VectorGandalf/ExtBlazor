@@ -34,11 +34,6 @@
             SortExp = "Name"
         };
 
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-    }
-
     protected override void OnInitialized()
     {
         pagination.OnNavigation = async () => await UpdateItems();
@@ -86,7 +81,7 @@
         var pagedSet = await httpClient.GetFromJsonAsync<PagedSet<User>>(url);
         if (pagedSet != null)
         {
-            pagination.SetTotalNumberOfItem(pagedSet.Total);
+            pagination.TotalCount = pagedSet.Total;
             items = pagedSet.Items;
             StateHasChanged();
         }

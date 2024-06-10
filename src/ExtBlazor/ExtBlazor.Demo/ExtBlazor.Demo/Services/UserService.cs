@@ -1,6 +1,7 @@
 ﻿using ExtBlazor.Core;
 using ExtBlazor.Demo.Client.Models;
 using ExtBlazor.Demo.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExtBlazor.Demo.Services;
 
@@ -19,10 +20,10 @@ public class UserService(ExDbContext dbContext) : IUserService
         foreach (var token in tokens)
         {
             queryable = queryable.Where(user =>
-                user.Name.Contains(token) ||
-                user.Phone.Contains(token) ||
-                user.Email.Contains(token) ||
-                user.Username.Contains(token));
+                user.Name.ToLower().Contains(token.ToLower()) ||
+                user.Phone.ToLower().Contains(token.ToLower()) ||
+                user.Email.ToLower().Contains(token.ToLower()) ||
+                user.Username.ToLower().Contains(token.ToLower()));
         }
 
         return await queryable.ToPagedSetAsync(query);

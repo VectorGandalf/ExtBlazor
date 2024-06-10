@@ -1,9 +1,15 @@
 ﻿namespace ExtBlazor.Core;
 public class Pagination
 {
-    public int Take { get; set; }
-    public int Skip { get; set; }
-    public int TotalCount { get; set; }
+    public Action? OnNavigation;
+
+    private int skip;
+    private int take;
+    private int totalCount;
+
+    public int Take { get => take; set => SetTake(value); }
+    public int Skip { get => skip; set => SetSkip(value); }
+    public int TotalCount { get => totalCount; set => SetTotalCount(value); }
 
     public int Pages => Take > 0 
         ? (int)Math.Ceiling((decimal)TotalCount / (decimal)Take) 
@@ -17,24 +23,24 @@ public class Pagination
 
     public bool HasPrevious => CurrentPage > 1;
 
-    public void SetTotalNumberOfItem(int value)
+    private void SetTotalCount(int value)
     {
-        if (value != TotalCount)
+        if (value != totalCount)
         {
-            TotalCount = value;
+            totalCount = value;
             SetPage(1);
         }
     }
 
-    public void SetTake(int value)
+    private void SetTake(int value)
     {
-        Take = value;
+        take = value;
         SetPage(1);
     }
 
-    public void SetSkip(int value)
+    private void SetSkip(int value)
     {
-        Skip = value < 0 
+        skip = value < 0 
             ?  0 
             : value;
     }
@@ -84,10 +90,8 @@ public class Pagination
                 : 1;
         }
 
-        Skip = (pageNumber - 1) * Take;
+        skip = (pageNumber - 1) * take;
 
         OnNavigation?.Invoke();
     }
-
-    public Action? OnNavigation;
 }

@@ -1,4 +1,11 @@
 <nav aria-label="Page navigation" class="@NavCssClass">
+    <select @bind=@Pagination.Take>
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="40">40</option>
+        <option value="70">70</option>
+        <option value="100">100</option>
+    </select>
     <button class="@ButtonCssClass" @onclick="Pagination.First">&#171;</button>
     <button class="@ButtonCssClass" @onclick="Pagination.Previous">&#8249;</button>
     @foreach (var page in Pagination.GetWindow(Padding))

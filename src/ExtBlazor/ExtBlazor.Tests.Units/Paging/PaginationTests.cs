@@ -16,8 +16,8 @@ public class PaginationTests
     public void PagesTest(int total, int take, int expectedPages)
     {
         var nav = new Pagination();
-        nav.SetTotalNumberOfItem(total);
-        nav.SetTake(take);
+        nav.TotalCount = total;
+        nav.Take = take;
         Assert.Equal(expectedPages, nav.Pages);
     }
 
@@ -31,9 +31,9 @@ public class PaginationTests
     public void CurrentPageTest(int total, int take, int skip, int expectedPage)
     {
         Pagination nav = new();
-        nav.SetTotalNumberOfItem(total);
-        nav.SetTake(take);
-        nav.SetSkip(skip);
+        nav.TotalCount = total;
+        nav.Take = take;
+        nav.Skip = skip;
         Assert.Equal(expectedPage, nav.CurrentPage);
     }
 
@@ -53,9 +53,9 @@ public class PaginationTests
     public void GetWindowTest(int skip, int padding, int expectedFirst, int expectedLast)
     {
         Pagination nav = new();
-        nav.SetTotalNumberOfItem(1000);
-        nav.SetTake(10);
-        nav.SetSkip(skip);
+        nav.TotalCount = 1000;
+        nav.Take = 10;
+        nav.Skip = skip;
 
         var window = nav.GetWindow(padding);
 
@@ -74,9 +74,9 @@ public class PaginationTests
     public void SetPageTest(int pageNumber, int expectedCurrentPage)
     {
         Pagination nav = new();
-        nav.SetTotalNumberOfItem(1000);
-        nav.SetTake(10);
-        nav.SetSkip(0);
+        nav.TotalCount = 1000;
+        nav.Take = 10;
+        nav.Skip = 0;
 
         nav.SetPage(pageNumber);
 
@@ -89,9 +89,9 @@ public class PaginationTests
     public void PreviousTest(int pageNumber)
     {
         var nav = new Pagination();
-        nav.SetTotalNumberOfItem(1000);
-        nav.SetTake(10);
-        nav.SetSkip(0);
+        nav.TotalCount = 1000;
+        nav.Take = 10;
+        nav.Skip = 0;
 
         nav.SetPage(pageNumber);
 
@@ -106,9 +106,9 @@ public class PaginationTests
     public void NextTest(int pageNumber)
     {
         var nav = new Pagination();
-        nav.SetTotalNumberOfItem(1000);
-        nav.SetTake(10);
-        nav.SetSkip(0);
+        nav.TotalCount = 1000;
+        nav.Take = 10;
+        nav.Skip = 0;
 
         nav.SetPage(pageNumber);
 
