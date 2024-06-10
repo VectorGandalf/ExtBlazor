@@ -5,7 +5,7 @@ namespace ExtBlazor.Core;
 
 public static class IQueryableExtensions
 {
-    public static async Task<PagedSet<T>> PageAsync<T>(this IQueryable<T> query,
+    public static async Task<PagedSet<T>> ToPagedSetAsync<T>(this IQueryable<T> query,
         IPagingationParameters pagingation)
     {
         return await query.PageAsync(

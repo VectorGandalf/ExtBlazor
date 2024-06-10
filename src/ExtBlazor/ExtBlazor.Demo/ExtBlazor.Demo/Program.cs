@@ -2,6 +2,7 @@ using ExtBlazor.Core;
 using ExtBlazor.Demo.Client.Models;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
+using ExtBlazor.Demo.Services;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,15 +12,13 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services
-    .AddDbContext<ExDbContext>(_ =>
-    {
-        _.UseSqlite(@"Data Source=.\ex.db");
-    });
+    .AddDbContext<ExDbContext>(_ => _.UseSqlite(@"Data Source=.\ex.db"))
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen()
+    .AddScoped<IUserService, UserService>(); 
 
-builder.Services.AddControllers();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services
+    .AddControllers();
 
 var app = builder.Build();
 
@@ -42,20 +41,7 @@ app.UseAntiforgery();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.MapGet("/api/users", async ([AsParameters] GetUsersQuery query, ExDbContext context) =>
-{
-    var q = context.Users.AsQueryable();
-    foreach (var token in (query.Search ?? "").Split(' ')) 
-    {
-        q = q.Where(_ => 
-            _.Name.Contains(token) ||
-            _.Phone.Contains(token) || 
-            _.Email.Contains(token) ||  
-            _.Username.Contains(token));       
-    }
-
-    return await q.PageAsync(query);
-});
+AddEndPoints(app);
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
@@ -75,4 +61,10 @@ static async Task UpdateDatabaseSchema(WebApplication app)
         await db.Database.MigrateAsync();
         Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
     }
+}
+
+static void AddEndPoints(WebApplication app)
+{
+    app.MapGet("/api/users", 
+        async ([AsParameters] GetUsersQuery query, IUserService users) => await users.GetUsers(query));
 }

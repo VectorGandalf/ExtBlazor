@@ -146,10 +146,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         foreach (var item in Enumerable.Range(1, 1007))
         {
-            var fnamn = firstNames[Random.Shared.Next(0, firstNames.Count() - 1)];
-            var lnamn = lastnames[Random.Shared.Next(0, lastnames.Count() - 1)];
+            var firstName = firstNames[Random.Shared.Next(0, firstNames.Count() - 1)];
+            var lastName = lastnames[Random.Shared.Next(0, lastnames.Count() - 1)];
 
-            var email = fnamn + "." + lnamn + "@" + "testdomain.com";
+            var email = firstName + "." + lastName + "@" + "testdomain.com";
             var username = "user" + item.ToString();
 
             var created = DateTime.Now.Subtract(TimeSpan.FromDays(Random.Shared.Next(2, 1024)));
@@ -159,11 +159,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
             users.Add(new User
             {
-                Name = fnamn + " " + lnamn,
+                Name = firstName + " " + lastName,
                 Email = email,
                 Username = username,
                 Id = item,
-                Phone = "+46" + Random.Shared.Next(700000000, 799999999).ToString(),
+                Phone = "+" + Random.Shared.Next(10, 99).ToString() + Random.Shared.Next(700000000, 799999999).ToString(),
                 Created = created,
                 Changed = changed,
                 LastLogin = login

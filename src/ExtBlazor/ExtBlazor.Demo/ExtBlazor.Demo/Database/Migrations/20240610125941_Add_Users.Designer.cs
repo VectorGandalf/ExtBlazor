@@ -3,6 +3,7 @@ using System;
 using ExtBlazor.Demo.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExtBlazor.Demo.Database.Migrations
 {
     [DbContext(typeof(ExDbContext))]
-    partial class ExDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240610125941_Add_Users")]
+    partial class Add_Users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");

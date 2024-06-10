@@ -7,7 +7,7 @@
 </p>
 <div class="input-group w-50">
     <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
-    <button class="btn btn-primary" @onclick=UpdateItems>Search</button>
+    <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
 <Grid Items="items" OnColumnEvent="_ => HandleColumnEvent(_)" CssClass="table table-striped w-100">
     <PropertyColumn Property="_ => _.Id" />
@@ -36,14 +36,24 @@
 
     protected override async Task OnInitializedAsync()
     {
-        pagination.OnCurrentPageChanged += async (o, e) => await OnCurrentPageChanged(o, e)!;
-        await UpdateItems();
         await base.OnInitializedAsync();
+    }
+
+    protected override void OnInitialized()
+    {
+        pagination.OnNavigation = async () => await UpdateItems();
+        pagination.SetPage(1);
+        base.OnInitialized();
+    }
+
+    private void Search()
+    {        
+        pagination.SetPage(1);
     }
 
     private IEnumerable<User> items = [];
 
-    private async Task HandleColumnEvent(IColumnEventArgs data)
+    private void HandleColumnEvent(IColumnEventArgs data)
     {
         if (data is SortEventData sortData)
         {
@@ -55,19 +65,23 @@
 
             query.SortExp = sortData.SortExpression;
 
-            await UpdateItems();
+            pagination.SetPage(1);
         }
     }
-
-    private async Task OnCurrentPageChanged(object obj, EventArgs args)
+    
+    private void Enter(KeyboardEventArgs e)
     {
-        query.Skip = pagination.Skip;
-        query.Take = pagination.Take;
-        await UpdateItems();
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            Search();
+        }
     }
 
     private async Task UpdateItems()
     {
+        query.Skip = pagination.Skip;
+        query.Take = pagination.Take;
+
         var url = $"api/users" + query.ToQueryString();
         var pagedSet = await httpClient.GetFromJsonAsync<PagedSet<User>>(url);
         if (pagedSet != null)
@@ -75,14 +89,6 @@
             pagination.SetTotalNumberOfItem(pagedSet.Total);
             items = pagedSet.Items;
             StateHasChanged();
-        }
-    }
-
-    private async Task Enter(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            await UpdateItems();
         }
     }
 }

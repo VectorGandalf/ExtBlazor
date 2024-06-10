@@ -34,7 +34,9 @@ public class Pagination
 
     public void SetSkip(int value)
     {
-        Skip = value;
+        Skip = value < 0 
+            ?  0 
+            : value;
     }
 
     public IEnumerable<int> GetWindow(int paddingAroundCurrentPage)
@@ -77,12 +79,15 @@ public class Pagination
 
         if (pageNumber >= Pages)
         {
-            pageNumber = Pages;
+            pageNumber = Pages > 0 
+                ? Pages 
+                : 1;
         }
 
         Skip = (pageNumber - 1) * Take;
-        OnCurrentPageChanged?.Invoke(new(), new());
+
+        OnNavigation?.Invoke();
     }
 
-    public event EventHandler? OnCurrentPageChanged;
+    public Action? OnNavigation;
 }
