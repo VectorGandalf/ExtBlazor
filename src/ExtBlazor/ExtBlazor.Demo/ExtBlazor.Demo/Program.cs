@@ -11,9 +11,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services
-    .AddDbContext<ExDbContext>(o =>
+    .AddDbContext<ExDbContext>(_ =>
     {
-        o.UseSqlite("Data Source=" + GeExtDbPath());
+        _.UseSqlite(@"Data Source=.\ex.db");
     });
 
 builder.Services.AddControllers();
@@ -50,7 +50,7 @@ app.MapGet("/api/users", async ([AsParameters] GetUsersQuery query, ExDbContext 
         q = q.Where(_ => 
             _.Name.Contains(token) ||
             _.Phone.Contains(token) || 
-            _.Email.Contains(token) || 
+            _.Email.Contains(token) ||  
             _.Username.Contains(token));       
     }
 
@@ -65,16 +65,6 @@ app.MapRazorComponents<App>()
 await UpdateDatabaseSchema(app);
 
 app.Run();
-
-static string GeExtDbPath()
-{
-    //var folder = Environment.SpecialFolder.AdminTools;
-    //var path = Environment.GetFolderPath(folder);
-    //var subpath = System.IO.Path.Join(path, "ExtBlazor.Demo");
-    //Directory.CreateDirectory(System.IO.Path.Join(path, "ExtBlazor.Demo"));
-    //return System.IO.Path.Join(path, "ExtBlazor.Demo", "ex.db");
-    return @".\ex.db";
-}
 
 static async Task UpdateDatabaseSchema(WebApplication app)
 {
