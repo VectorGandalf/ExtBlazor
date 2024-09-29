@@ -1,4 +1,4 @@
 ﻿namespace ExtBlazor.Core;
-public interface IQuery
+public interface IQuery<TResult>
 {
 }

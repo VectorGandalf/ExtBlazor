@@ -1,9 +1,9 @@
-using ExtBlazor.Core;
 using ExtBlazor.Demo.Client.Models;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
 using ExtBlazor.Demo.Services;
 using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -65,6 +65,6 @@ static async Task UpdateDatabaseSchema(WebApplication app)
 
 static void AddEndPoints(WebApplication app)
 {
-    app.MapGet("/api/users", 
-        async ([AsParameters] GetUsersQuery query, IUserService users) => await users.GetUsers(query));
+    app.MapGet("/api/users", async ([AsParameters] GetUsersQuery query, IUserService users) => await users.GetUsers(query));
+    app.MapGet("/api/usersdtos", async ([AsParameters] GetUserDtosQuery query, IUserService users) => await users.GetUserDtos(query));
 }

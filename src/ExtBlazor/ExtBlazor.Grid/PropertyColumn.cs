@@ -13,20 +13,13 @@ public class PropertyColumn<TItem, TProperty> : ColumnBase<TItem>
 
     private Func<TItem, TProperty>? compiledProperty;
     private string? propertyName;
-    public override RenderFragment<ColumnBase<TItem>>? HeadTemplate { get; set; } = item
-        => builder =>
-        {
-            builder.OpenComponent(0, typeof(PropertyColumnDefaultHeadTemplate<TItem, TProperty>));
-            builder.AddAttribute(1, "Column", (PropertyColumn<TItem, TProperty>)item);
-            builder.CloseComponent();
-        };
 
     protected override void OnParametersSet()
     {
         compiledProperty = Property.Compile();
         if (Property != null && Property.Body is MemberExpression memberExpression) 
-        {
-            propertyName = memberExpression.Member.Name;
+        {;
+            propertyName = string.Join('.', memberExpression.ToString().Split('.').Skip(1));
         }
 
         if (Title == null && propertyName != null)
@@ -53,14 +46,5 @@ public class PropertyColumn<TItem, TProperty> : ColumnBase<TItem>
         }
 
         return null;
-    }
-
-    public Task Sort(bool? ascending) 
-    {
-        return Grid!.SignalColumnEvent(new SortEventData
-        {
-            SortExpression = propertyName,
-            Ascending = ascending
-        });
     }
 }

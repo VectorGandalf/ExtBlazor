@@ -1,7 +1,7 @@
 ﻿namespace ExtBlazor.Core;
 public static class IQueryExtensions
 {
-    public static string ToQueryString(this IQuery query) 
+    public static string ToQueryString<TResult>(this IQuery<TResult> query) 
     {
         Dictionary<string, string?> pairs = new();
                 

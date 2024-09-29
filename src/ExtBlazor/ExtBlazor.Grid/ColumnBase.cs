@@ -26,9 +26,27 @@ public abstract class ColumnBase<TItem> : ComponentBase
         if (Grid != null)
         {
             Grid.AddColumn(this);
+            if (HeadTemplate == null)
+            {
+                HeadTemplate = item => builder =>
+                {
+                    builder.OpenComponent(0, Grid.DefaultHeadTempate);
+                    builder.AddAttribute(1, "Column", item);
+                    builder.CloseComponent();
+                };
+            }
         }
 
         base.OnInitialized();
+    }
+
+    public Task Sort(bool? ascending)
+    {
+        return Grid!.SignalColumnEvent(new ColumnSortEventArgs
+        {
+            SortExpression = SortColumn,
+            Ascending = ascending
+        });
     }
 
     internal virtual Task OnColumnEventHandler(IColumnEventArgs args) 

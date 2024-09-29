@@ -1,24 +1,23 @@
 <nav aria-label="Page navigation" class="@NavCssClass">
-    <select @bind=@Pagination.Take>
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="40">40</option>
-        <option value="70">70</option>
-        <option value="100">100</option>
+    <select @bind=@Pagination.Take class="@SelectCssClass">
+        @foreach (var size in PageSizes)
+        {
+            <option value="@size">@size</option>
+        }        
     </select>
-    <button class="@ButtonCssClass" @onclick="Pagination.First">&#171;</button>
-    <button class="@ButtonCssClass" @onclick="Pagination.Previous">&#8249;</button>
+    <button role="navigation" type="button" class="@ButtonCssClass" @onclick="Pagination.First">&#171;</button>
+    <button role="navigation" type="button" class="@ButtonCssClass" @onclick="Pagination.Previous">&#8249;</button>
     @foreach (var page in Pagination.GetWindow(Padding))
     {
         if (page != Pagination.CurrentPage)
         {
-            <button class="@ButtonCssClass" id="page-@(page)" @onclick="() => Pagination.SetPage(page)">@(page)</button>
+            <button role="navigation" type="button" class="@ButtonCssClass" id="page-@(page)" @onclick="() => Pagination.SetPage(page)">@(page)</button>
         }
         else
         {
-            <button class="@ButtonCssClass @ActiveCssClass">@(page)</button>
+            <button role="navigation" type="button" class="@ButtonCssClass @ActiveCssClass">@(page)</button>
         }
     }
-    <button class="@ButtonCssClass" @onclick="Pagination.Next">&#8250;</button>
-    <button class="@ButtonCssClass" @onclick="Pagination.Last">&#187;</button>
+    <button role="navigation" type="button" class="@ButtonCssClass" @onclick="Pagination.Next">&#8250;</button>
+    <button role="navigation" type="button" class="@ButtonCssClass" @onclick="Pagination.Last">&#187;</button>
 </nav>

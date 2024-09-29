@@ -1,0 +1,94 @@
+﻿@using ExtBlazor.Core
+@using ExtBlazor.Demo.Client.Services
+@using ExtBlazor.Paginators
+@inject IQueryService queryService
+@attribute [CascadingTypeParameter(nameof(TItem))]
+@typeparam TItem
+<div class="d-flex justify-content-between">
+    <span>
+        Page: @(pagination.CurrentPage)/@(pagination.Pages)
+    </span>
+    <span>
+        Page size: 
+        <select @bind=pagination.Take class="form-select w-auto">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </span>
+</div>
+<Grid Items="items" OnColumnEvent="args => HandleColumnEvent(args)" CssClass="table table-striped w-100" DefaultHeadTempate="typeof(CustomHeadTemplate<TItem>)">
+    @ChildContent
+</Grid>
+<nav>
+    <div class="d-flex justify-content-center">
+        <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.First">&#171;</button>
+        <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.Previous">&#8249;</button>
+        <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.Next">&#8250;</button>
+        <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.Last">&#187;</button>
+    </div>
+</nav>
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter, EditorRequired]
+    public required IPageQuery<TItem> Query { get; set; }
+
+    private IEnumerable<TItem> items = [];
+
+    private Pagination pagination = new()
+        {
+            Take = 10,
+            Skip = 0,
+            TotalCount = 0
+        };
+
+    protected override void OnInitialized()
+    {
+        pagination.OnNavigation = async () => await UpdateItems();
+        pagination.SetPage(1);
+        base.OnInitialized();
+    }
+
+    private void HandleColumnEvent(IColumnEventArgs args)
+    {
+        if (args is ColumnSortEventArgs sortArgs && sortArgs.SortExpression != null)
+        {
+            bool Asc = sortArgs.Ascending ?? true;
+
+            Query.Sort = (sortArgs.SortExpression ?? "") + (Asc ? " asc" : " desc");
+
+            pagination.SetPage(1);
+        }
+    }
+
+    private async Task UpdateItems()
+    {
+        //bind query
+        Query.Skip = pagination.Skip;
+        Query.Take = pagination.Take;
+
+        var pagedSet = await queryService.Query(Query);
+        if (pagedSet != null)
+        {
+            pagination.TotalCount = pagedSet.Total;
+            items = pagedSet.Items;
+        }
+        else
+        {
+            pagination.TotalCount = 0;
+            items = [];    
+        }
+
+        StateHasChanged();
+    }
+
+    public async Task Update()
+    {
+        pagination.SetPage(1);
+        await UpdateItems();
+    }
+}

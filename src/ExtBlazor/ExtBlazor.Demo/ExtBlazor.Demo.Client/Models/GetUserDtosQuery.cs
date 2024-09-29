@@ -2,10 +2,10 @@
 
 namespace ExtBlazor.Demo.Client.Models;
 
-public class GetUsersQuery : IPageQuery<User>
+public class GetUserDtosQuery : IPageQuery<UserDto>
 {
     public string? Search { get; set; }
-    public string? Sort { get; set; } = $"{nameof(User.Name)},{nameof(User.Username)} desc";
+    public string? Sort { get; set; } = $"{nameof(UserDto.Name)}";
     public int? Skip { get; set; }
     public int? Take { get; set; }
 }

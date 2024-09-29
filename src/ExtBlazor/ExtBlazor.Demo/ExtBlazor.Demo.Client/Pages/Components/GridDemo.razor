@@ -9,18 +9,20 @@
     <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
     <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
-<Grid Items="items" OnColumnEvent="_ => HandleColumnEvent(_)" CssClass="table table-striped w-100">
-    <PropertyColumn Property="_ => _.Id" />
-    <PropertyColumn Property="_ => _.Name" />
-    <PropertyColumn Property="_ => _.Username" />
-    <PropertyColumn Property="_ => _.Email" Title="E-Mail" />
-    <PropertyColumn Property="_ => _.Phone" Format="@(_ => _.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " "))" />
-    <PropertyColumn Property="_ => _.Created" Format="@(_ => _.ToString("yyyy-MM-dd"))" />
-    <PropertyColumn Property="_ => _.LastLogin" Title="Last login" Format="@(_ => _?.ToString("yyyy-MM-dd HH:mm"))" />
+<Grid Items="items" OnColumnEvent="args => HandleColumnEvent(args)" CssClass="table table-striped w-100">
+    <PropertyColumn Property="u => u.Id" />
+    <PropertyColumn Property="u => u.Name" />
+    <PropertyColumn Property="u => u.Username" />
+    <PropertyColumn Property="u => u.Email" Title="E-Mail" />
+    <PropertyColumn Property="u => u.Phone" Format="@(u => u.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " "))" />
+    <PropertyColumn Property="u => u.Created" Format="@(u => u.ToString("yyyy-MM-dd"))" />
+    <PropertyColumn Property="u => u.LastLogin" Title="Last login" Format="@(u => u?.ToString("yyyy-MM-dd HH:mm"))" />
 </Grid>
-<SimplePagination Pagination="pagination" Padding="5" NavCssClass="pagination" ActiveCssClass="active" ButtonCssClass="page-item page-link" />
+<SimplePagination Pagination="pagination" Padding="5" NavCssClass="pagination" ActiveCssClass="active" ButtonCssClass="page-item page-link" SelectCssClass="form-select w-auto me-5" />
 @code
 {
+    private IEnumerable<User> items = [];
+
     private Pagination pagination = new()
         {
             Take = 10,
@@ -30,8 +32,6 @@
 
     private GetUsersQuery query = new()
         {
-            Asc = true,
-            SortExp = "Name"
         };
 
     protected override void OnInitialized()
@@ -46,19 +46,13 @@
         pagination.SetPage(1);
     }
 
-    private IEnumerable<User> items = [];
-
-    private void HandleColumnEvent(IColumnEventArgs data)
+    private void HandleColumnEvent(IColumnEventArgs args)
     {
-        if (data is SortEventData sortData)
+        if (args is ColumnSortEventArgs sortArgs)
         {
-            query.Asc = sortData.Ascending != null
-                ? sortData.Ascending
-                : query.SortExp != sortData.SortExpression
-                    ? true
-                    : !query.Asc;
+            bool Asc = sortArgs.Ascending ?? true;
 
-            query.SortExp = sortData.SortExpression;
+            query.Sort = (sortArgs.SortExpression ?? "") + (Asc ? " asc" : " desc");
 
             pagination.SetPage(1);
         }
@@ -78,7 +72,7 @@
         query.Take = pagination.Take;
 
         var url = $"api/users" + query.ToQueryString();
-        var pagedSet = await httpClient.GetFromJsonAsync<PagedSet<User>>(url);
+        var pagedSet = await httpClient.GetFromJsonAsync<Page<User>>(url);
         if (pagedSet != null)
         {
             pagination.TotalCount = pagedSet.Total;

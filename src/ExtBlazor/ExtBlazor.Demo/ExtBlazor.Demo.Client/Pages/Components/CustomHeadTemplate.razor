@@ -1,0 +1,11 @@
+@typeparam TItem
+@inherits SortableHeadTemplateBase<TItem>
+<button @onclick=@(async () => await OnClick())>@Column.Title</button><span>@SortHtml</span>
+@code {
+
+    private MarkupString? SortHtml => Grid.SortExpression == Column.SortColumn && Grid.SortExpression != null 
+    ? Ascending 
+        ? (MarkupString)"&#8964;" 
+        : (MarkupString)"&#8963;" 
+    : null;
+}

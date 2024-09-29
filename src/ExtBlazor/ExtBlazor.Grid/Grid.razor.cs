@@ -16,6 +16,9 @@ public partial class Grid<TItem>
     [Parameter]
     public string? CssClass { get; set; }
 
+    [Parameter]
+    public Type DefaultHeadTempate { get; set; } = typeof(DefaultHeadTemplate<TItem>);
+
     public string? SortExpression { get; private set; }
 
     private List<ColumnBase<TItem>> Columns { get; set; } = [];
@@ -28,7 +31,7 @@ public partial class Grid<TItem>
 
     internal async Task SignalColumnEvent(IColumnEventArgs args) 
     {
-        if (args is SortEventData sortArgs) 
+        if (args is ColumnSortEventArgs sortArgs) 
         {
             SortExpression = sortArgs.SortExpression;
             StateHasChanged();

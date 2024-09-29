@@ -1,31 +1,33 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+using System.Collections.Immutable;
+using ExtBlazor.Core;
 
-namespace ExtBlazor.Core;
+namespace ExtBlazor.Core.Server;
 
 public static class IQueryableExtensions
 {
-    public static async Task<PagedSet<T>> ToPagedSetAsync<T>(this IQueryable<T> query,
-        IPagingationParameters pagingation)
-    {
-        return await query.PageAsync(
-            pagingation.SortExp,
-            pagingation.Asc,
+    public static async Task<Page<T>> PageAsync<T>(this IQueryable<T> query,
+        IPageParameters pagingation,
+        CancellationToken ct = default)
+     => await query.PageAsync(
+            pagingation.Sort,
             pagingation.Skip,
-            pagingation.Take);
-    }
+            pagingation.Take,
+            ct);
+    
 
-    public static async Task<PagedSet<T>> PageAsync<T>(this IQueryable<T> query,
-        string? sortProperty,
-        bool? ascending,
+    public static async Task<Page<T>> PageAsync<T>(this IQueryable<T> query,
+        string? sortPropertyExpressions,
         int? skip,
-        int? take)
+        int? take,
+        CancellationToken ct = default)
     {
+        query = query.Sort(sortPropertyExpressions);
         var items = (take != null && skip != null)
-            ? await query.OrderBy(sortProperty, ascending).Skip((int)skip).Take((int)take).ToListAsync()
-            : await query.OrderBy(sortProperty, ascending).ToListAsync();
+            ? await query.Skip((int)skip).Take((int)take).ToListAsync(ct)
+            : await query.ToListAsync(ct);
 
-        var totalCount = await query.CountAsync();
+        var totalCount = await query.CountAsync(ct);
 
         return new(items, totalCount);
     }

@@ -1,0 +1,41 @@
+﻿@using ExtBlazor.Core
+<h2>Wrapped Grid demo</h2>
+<p>
+    The recomended way to use Grid component is to wrap it with the project specifics for easy use.
+</p>
+<div class="input-group w-50">
+    <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
+    <button class="btn btn-primary" @onclick=Search>Search</button>
+</div>
+<WrappedGrid Query="query" @ref=grid>
+    <PropertyColumn Property="u => u.Id" />
+    <PropertyColumn Property="u => u.Name" />
+    <PropertyColumn Property="u => u.Username" />
+    <TemplateColumn Context="c" Title="E-mail" SortColumn="ContactInformation.Email">
+        <a href="mailto:@c.ContactInformation.Email">@c.ContactInformation.Email</a>
+    </TemplateColumn>
+    <PropertyColumn Property="u => u.ContactInformation.Phone" Format=FormatPhoneNumber />
+    <PropertyColumn Property="u => u.Created" Format=FormatDate />
+    <PropertyColumn Property="u => u.LastLogin" Title="Last login" Format=FormatDateTime />
+</WrappedGrid>
+@code {
+    private GetUserDtosQuery query = new();
+
+    private WrappedGrid<UserDto>? grid;
+
+    private async Task Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+            await Search();
+    }
+
+    private async Task Search()
+    {
+        if (grid != null)
+            await grid.Update();
+    }
+
+    private string? FormatPhoneNumber(string phoneNumber) => phoneNumber.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " ");
+    private string? FormatDate(DateTime date) => date.ToString("yyyy-MM-dd");
+    private string? FormatDateTime(DateTime? dateTime) => dateTime?.ToString("yyyy-MM-dd HH:mm");
+}
