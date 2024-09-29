@@ -1,22 +1,18 @@
 ﻿button {
-	border: none;
-	background: none;
-	padding:0;
-	margin:0;
-	margin-right: 0.2rem;
+    font-weight: bold;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    margin-right: 0.2rem;
 }
 
-	button.ascending:after {
-		margin-left:6px;
-		content: "\25be" /*"&#8964;";*/
-	}
+    button.ascending:after {
+        margin-left: 6px;
+        content: "\25be"
+    }
 
-	button.descending:after {
-		margin-left: 6px;
-		content: "\25b4" /*"&#8963;"*/
-	}
-
-/*
-		  ? (MarkupString)"&#8964;" 
-        : (MarkupString)"&#8963;" 
-	*/
+    button.descending:after {
+        margin-left: 6px;
+        content: "\25b4"
+    }

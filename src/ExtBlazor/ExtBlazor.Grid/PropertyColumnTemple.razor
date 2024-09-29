@@ -1,0 +1,10 @@
+@typeparam TItem
+@typeparam TProperty
+@Column.GetValue(Value)
+@code{
+    [Parameter, EditorRequired]
+    public required Column<TItem, TProperty> Column { get; set; }
+
+    [Parameter]
+    public TItem? Value { get; set; }
+}

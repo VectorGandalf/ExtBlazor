@@ -8,15 +8,18 @@
     <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
 <WrappedGrid Query="query" @ref=grid>
-    <PropertyColumn Property="u => u.Id" />
-    <PropertyColumn Property="u => u.Name" />
-    <PropertyColumn Property="u => u.Username" />
-    <TemplateColumn Context="c" Title="E-mail" SortColumn="ContactInformation.Email">
-        <a href="mailto:@c.ContactInformation.Email">@c.ContactInformation.Email</a>
+    <Column Property="u => u.Id" />
+    <Column Property="u => u.Name" />
+    <Column Property="u => u.Username" />
+    <Column Property="u => u.ContactInformation.Email" Title="E-mail" Context="item">
+        <a href="mailto:@item.ContactInformation.Email">@item.ContactInformation.Email</a>
+    </Column>
+    <Column Property="u => u.ContactInformation.Phone" Format=FormatPhoneNumber />
+    <Column Property="u => u.Created" Format=FormatDate DefaultSortColumn="true" DefaultSortDirectionAsc="false" />
+    <Column Property="u => u.LastLogin" Title="Last login" Format=FormatDateTime />
+    <TemplateColumn Title="E-mail length" Context="item" Sortable="false">
+        @item.ContactInformation.Email.Length
     </TemplateColumn>
-    <PropertyColumn Property="u => u.ContactInformation.Phone" Format=FormatPhoneNumber />
-    <PropertyColumn Property="u => u.Created" Format=FormatDate />
-    <PropertyColumn Property="u => u.LastLogin" Title="Last login" Format=FormatDateTime />
 </WrappedGrid>
 @code {
     private GetUserDtosQuery query = new();

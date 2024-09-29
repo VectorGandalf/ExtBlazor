@@ -10,13 +10,13 @@
     <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
 <Grid Items="items" OnColumnEvent="args => HandleColumnEvent(args)" CssClass="table table-striped w-100">
-    <PropertyColumn Property="u => u.Id" />
-    <PropertyColumn Property="u => u.Name" />
-    <PropertyColumn Property="u => u.Username" />
-    <PropertyColumn Property="u => u.Email" Title="E-Mail" />
-    <PropertyColumn Property="u => u.Phone" Format="@(u => u.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " "))" />
-    <PropertyColumn Property="u => u.Created" Format="@(u => u.ToString("yyyy-MM-dd"))" />
-    <PropertyColumn Property="u => u.LastLogin" Title="Last login" Format="@(u => u?.ToString("yyyy-MM-dd HH:mm"))" />
+    <Column Property="u => u.Id" />
+    <Column Property="u => u.Name" DefaultSortColumn="true" />
+    <Column Property="u => u.Username" />
+    <Column Property="u => u.Email" Title="E-Mail" />
+    <Column Property="u => u.Phone" Format="@(u => u.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " "))" />
+    <Column Property="u => u.Created" Format="@(u => u.ToString("yyyy-MM-dd"))" />
+    <Column Property="u => u.LastLogin" Title="Last login" Format="@(u => u?.ToString("yyyy-MM-dd HH:mm"))" Sortable="false" />
 </Grid>
 <SimplePagination Pagination="pagination" Padding="5" NavCssClass="pagination" ActiveCssClass="active" ButtonCssClass="page-item page-link" SelectCssClass="form-select w-auto me-5" />
 @code
@@ -31,8 +31,8 @@
         };
 
     private GetUsersQuery query = new()
-        {
-        };
+    {
+    };
 
     protected override void OnInitialized()
     {
@@ -42,7 +42,7 @@
     }
 
     private void Search()
-    {        
+    {
         pagination.SetPage(1);
     }
 
@@ -57,7 +57,7 @@
             pagination.SetPage(1);
         }
     }
-    
+
     private void Enter(KeyboardEventArgs e)
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")

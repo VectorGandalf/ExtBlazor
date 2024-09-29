@@ -1,11 +1,17 @@
 @typeparam TItem
 @inherits SortableHeadTemplateBase<TItem>
-<button @onclick=OnClick class="@SortClass">@Column.Title</button>
-@code {    
-
-    private string? SortClass => Grid.SortExpression == Column.SortColumn && Grid.SortExpression != null
-    ? Ascending 
-        ? "ascending"
-        : "descending"
-    : null;    
+@if (Column.Sortable)
+{
+    <button @onclick=OnClick class="@SortClass">@Column.Title</button>
+}
+else
+{
+    <text>@Column.Title</text>
+}
+@code {
+    private string? SortClass => Grid.SortExpression == Column.SortString && Grid.SortExpression != null
+        ? Ascending
+            ? "ascending"
+            : "descending"
+        : null;
 }

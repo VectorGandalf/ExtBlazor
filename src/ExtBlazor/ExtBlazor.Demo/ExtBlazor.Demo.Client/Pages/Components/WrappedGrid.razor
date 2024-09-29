@@ -49,7 +49,7 @@
     protected override void OnInitialized()
     {
         pagination.OnNavigation = async () => await UpdateItems();
-        pagination.SetPage(1);
+        // pagination.SetPage(1);
         base.OnInitialized();
     }
 

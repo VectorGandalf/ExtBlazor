@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System.Data.Common;
 
 namespace ExtBlazor.Grid;
 
@@ -6,26 +7,28 @@ public abstract class ColumnBase<TItem> : ComponentBase
 {
     [CascadingParameter(Name = "ParentGrid")]
     protected Grid<TItem>? Grid { get; set; }
-
+    [Parameter]
+    public virtual RenderFragment<TItem>? ChildContent { get; set; }
     [Parameter]
     public string? Title { get; set; }
     [Parameter]
-    public bool Sortable { get; set; }
+    public bool Sortable { get; set; } = true;
     [Parameter]
-    public string? SortColumn { get; set; }
+    public string? SortString { get; set; }
     [Parameter]
-    public bool DefaultSortColumn { get; set; }
+    public bool? DefaultSortColumn { get; set; }
     [Parameter]
-    public bool DefaultSortDirectionAsc { get; set; }
+    public bool DefaultSortDirectionAsc { get; set; } = true;
     [Parameter]
     public virtual RenderFragment<ColumnBase<TItem>>? HeadTemplate { get; set; }
     [Parameter]
     public virtual RenderFragment<ColumnBase<TItem>>? FootTemplate { get; set; }
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         if (Grid != null)
         {
             Grid.AddColumn(this);
+
             if (HeadTemplate == null)
             {
                 HeadTemplate = item => builder =>
@@ -37,22 +40,34 @@ public abstract class ColumnBase<TItem> : ComponentBase
             }
         }
 
-        base.OnInitialized();
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) 
+        {
+            if (DefaultSortColumn == true)
+            {
+                await Grid!.SignalColumnEvent(new ColumnSortEventArgs
+                {
+                    Ascending = DefaultSortDirectionAsc,
+                    SortExpression = SortString
+                });
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     public Task Sort(bool? ascending)
     {
         return Grid!.SignalColumnEvent(new ColumnSortEventArgs
         {
-            SortExpression = SortColumn,
+            SortExpression = SortString,
             Ascending = ascending
         });
     }
-
     internal virtual Task OnColumnEventHandler(IColumnEventArgs args) 
-    {
-        return Task.CompletedTask;
-    }
-
-    internal abstract string? GetValue(TItem item);
+        => Task.CompletedTask;
 }

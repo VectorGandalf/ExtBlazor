@@ -7,12 +7,12 @@
             <tr>
                 @foreach (var column in Columns)
                 {
-                    <th>
-                        @if (column.HeadTemplate != null)
-                        {
+                    @if (column.HeadTemplate != null)
+                    {
+                        <th>
                             @column.HeadTemplate(column)
-                        }
-                    </th>
+                        </th>
+                    }
                 }
             </tr>
         </thead>
@@ -23,13 +23,9 @@
                     @foreach (var column in Columns)
                     {
                         <td>
-                            @if (column is TemplateColumn<TItem> template && @template.ChildContent != null)
+                            @if (column.ChildContent != null)
                             {
-                                @template.ChildContent(item)
-                            }
-                            else
-                            {
-                                @column.GetValue(item)
+                                @column.ChildContent(item)
                             }
                         </td>
                     }

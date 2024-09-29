@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace ExtBlazor.Grid;
 
-public class PropertyColumn<TItem, TProperty> : ColumnBase<TItem>
+public class Column<TItem, TProperty> : TemplateColumn<TItem>
 {
     [Parameter, EditorRequired]
     public required Expression<Func<TItem, TProperty>> Property { get; set; }
@@ -13,6 +13,21 @@ public class PropertyColumn<TItem, TProperty> : ColumnBase<TItem>
 
     private Func<TItem, TProperty>? compiledProperty;
     private string? propertyName;
+
+    protected override void OnInitialized()
+    {
+        if (ChildContent == null)
+        {
+            ChildContent = item => builder =>
+            {
+                builder.OpenComponent(0, typeof(PropertyColumnTemple<TItem, TProperty>));
+                builder.AddAttribute(1, "Column", this);
+                builder.AddAttribute(2, "Value", item);
+                builder.CloseComponent();
+            };
+        }
+        base.OnInitialized();
+    }
 
     protected override void OnParametersSet()
     {
@@ -27,17 +42,17 @@ public class PropertyColumn<TItem, TProperty> : ColumnBase<TItem>
             Title = propertyName;
         }
 
-        if (SortColumn == null) 
+        if (SortString == null) 
         {
-            SortColumn = propertyName;
+            SortString = propertyName;
         }
 
         base.OnParametersSet();
     }
 
-    internal override string? GetValue(TItem item)
+    internal string? GetValue(TItem? item)
     {
-        if (compiledProperty != null)
+        if (compiledProperty != null && item != null)
         {
             var val = compiledProperty(item);
             return Format != null 
