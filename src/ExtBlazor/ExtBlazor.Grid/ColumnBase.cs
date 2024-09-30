@@ -52,14 +52,14 @@ public abstract class ColumnBase<TItem> : ComponentBase
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender) 
+        if (firstRender)
         {
             if (DefaultSortColumn == true)
             {
                 await Grid!.SignalColumnEvent(new ColumnSortEventArgs
                 {
                     Ascending = DefaultSortDirectionAsc,
-                    SortExpression = SortString
+                    SortString = SortString
                 });
             }
         }
@@ -71,10 +71,8 @@ public abstract class ColumnBase<TItem> : ComponentBase
     {
         return Grid!.SignalColumnEvent(new ColumnSortEventArgs
         {
-            SortExpression = SortString,
+            SortString = SortString,
             Ascending = ascending
         });
     }
-    internal virtual Task OnColumnEventHandler(IColumnEventArgs args) 
-        => Task.CompletedTask;
 }

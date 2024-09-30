@@ -31,11 +31,11 @@ public partial class Grid<TItem>
         StateHasChanged();
     }
 
-    internal async Task SignalColumnEvent(IColumnEventArgs args) 
+    internal async Task SignalColumnEvent(IColumnEventArgs args)
     {
-        if (args is ColumnSortEventArgs sortArgs) 
+        if (args is ColumnSortEventArgs sortArgs)
         {
-            SortExpression = sortArgs.SortExpression;
+            SortExpression = sortArgs.SortString;
             StateHasChanged();
         }
 

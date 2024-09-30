@@ -11,12 +11,12 @@ public class Pagination
     public int Skip { get => skip; set => SetSkip(value); }
     public int TotalCount { get => totalCount; set => SetTotalCount(value); }
 
-    public int Pages => Take > 0 
-        ? (int)Math.Ceiling((decimal)TotalCount / (decimal)Take) 
+    public int Pages => Take > 0
+        ? (int)Math.Ceiling((decimal)TotalCount / (decimal)Take)
         : 0;
 
-    public int CurrentPage => Skip != 0 
-        ? (int)Math.Ceiling((decimal)Skip / (decimal)Take) + 1 
+    public int CurrentPage => Skip != 0
+        ? (int)Math.Ceiling((decimal)Skip / (decimal)Take) + 1
         : 1;
 
     public bool HasNext => Pages - CurrentPage > 0;
@@ -40,8 +40,8 @@ public class Pagination
 
     private void SetSkip(int value)
     {
-        skip = value < 0 
-            ?  0 
+        skip = value < 0
+            ? 0
             : value;
     }
 
@@ -85,8 +85,8 @@ public class Pagination
 
         if (pageNumber >= Pages)
         {
-            pageNumber = Pages > 0 
-                ? Pages 
+            pageNumber = Pages > 0
+                ? Pages
                 : 1;
         }
 

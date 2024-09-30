@@ -15,7 +15,7 @@ builder.Services
     .AddDbContext<ExDbContext>(_ => _.UseSqlite(@"Data Source=.\ex.db"))
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
-    .AddScoped<IUserService, UserService>(); 
+    .AddScoped<IUserService, UserService>();
 
 builder.Services
     .AddControllers();

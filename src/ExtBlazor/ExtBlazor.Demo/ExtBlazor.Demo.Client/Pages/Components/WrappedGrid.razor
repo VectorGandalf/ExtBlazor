@@ -60,9 +60,9 @@
 
     private void OnColumnEvent(IColumnEventArgs args)
     {
-        if (args is ColumnSortEventArgs sortArgs && sortArgs.SortExpression != null)
+        if (args is ColumnSortEventArgs sortArgs && sortArgs.SortString != null)
         {
-            Query.Sort = (sortArgs.SortExpression ?? "") + (sortArgs.Ascending ?? true ? " asc" : " desc");
+            Query.Sort = (sortArgs.SortString ?? "") + (sortArgs.Ascending ?? true ? " asc" : " desc");
             pagination.SetPage(1);
         }
     }

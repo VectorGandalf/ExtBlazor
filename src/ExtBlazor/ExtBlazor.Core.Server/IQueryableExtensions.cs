@@ -14,7 +14,7 @@ public static class IQueryableExtensions
             pagingation.Skip,
             pagingation.Take,
             ct);
-    
+
 
     public static async Task<Page<T>> PageAsync<T>(this IQueryable<T> query,
         string? sortPropertyExpressions,

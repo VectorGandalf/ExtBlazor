@@ -1,11 +1,11 @@
 ﻿namespace ExtBlazor.Core;
 public static class IQueryExtensions
 {
-    public static string ToQueryString<TResult>(this IQuery<TResult> query) 
+    public static string ToQueryString<TResult>(this IQuery<TResult> query)
     {
         Dictionary<string, string?> pairs = new();
-                
-        foreach (var prop in query.GetType().GetProperties()) 
+
+        foreach (var prop in query.GetType().GetProperties())
         {
             pairs.Add(prop.Name, prop.GetValue(query)?.ToString());
         }

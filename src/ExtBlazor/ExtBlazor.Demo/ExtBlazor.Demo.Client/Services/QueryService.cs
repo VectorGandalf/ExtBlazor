@@ -26,9 +26,9 @@ public class QueryService(HttpClient httpClient) : IQueryService
         Dictionary<string, string> queryStringDict = new();
         Dictionary<string, string> pathDict = new();
 
-        foreach (var prop in query.GetType().GetProperties())
+        foreach (var property in query.GetType().GetProperties())
         {
-            var value = prop.GetValue(query);
+            var value = property.GetValue(query);
             if (value != null)
             {
                 if (value is IEnumerable<object> enumerable)
@@ -37,18 +37,19 @@ public class QueryService(HttpClient httpClient) : IQueryService
                     {
                         if (item != null)
                         {
-                            queryStringDict.Add(prop.Name, item.ToString() ?? "");
+                            queryStringDict.Add(property.Name, item.ToString() ?? "");
                         }
                     }
                 }
                 else
                 {
-                    var token = ToPathToken(prop);
+                    var token = ToPathToken(property);
                     if (urlTemplate.ToLowerInvariant().IndexOf(token) > -1)
                     {
                         pathDict.Add(token, value.ToString() ?? "");
                     }
-                    queryStringDict.Add(prop.Name, value.ToString() ?? "");
+
+                    queryStringDict.Add(property.Name, value.ToString() ?? "");
                 }
             }
         }

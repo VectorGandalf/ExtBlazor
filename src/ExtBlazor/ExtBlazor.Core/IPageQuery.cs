@@ -1,6 +1,6 @@
 ﻿namespace ExtBlazor.Core;
-public interface IPageQuery<TItem> : 
-    IQuery<Page<TItem>>, 
+public interface IPageQuery<TItem> :
+    IQuery<Page<TItem>>,
     IPageParameters
 {
 }

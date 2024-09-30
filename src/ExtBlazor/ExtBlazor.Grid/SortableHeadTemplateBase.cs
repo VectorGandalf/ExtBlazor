@@ -9,7 +9,7 @@ public abstract class SortableHeadTemplateBase<TItem> : HeadTemplateBase<TItem>
         {
             Ascending = !Ascending;
         }
-        else 
+        else
         {
             Ascending = true;
         };

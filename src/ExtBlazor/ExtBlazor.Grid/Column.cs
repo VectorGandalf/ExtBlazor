@@ -33,8 +33,8 @@ public class Column<TItem, TProperty> : TemplateColumn<TItem>
     protected override void OnParametersSet()
     {
         compiledProperty = Property.Compile();
-        if (Property != null && Property.Body is MemberExpression memberExpression) 
-        {;
+        if (Property != null && Property.Body is MemberExpression memberExpression)
+        {
             propertyName = string.Join('.', memberExpression.ToString().Split('.').Skip(1));
         }
 
@@ -43,7 +43,7 @@ public class Column<TItem, TProperty> : TemplateColumn<TItem>
             Title = propertyName;
         }
 
-        if (SortString == null) 
+        if (SortString == null)
         {
             SortString = propertyName;
         }
@@ -56,7 +56,7 @@ public class Column<TItem, TProperty> : TemplateColumn<TItem>
         if (compiledProperty != null && item != null)
         {
             var val = compiledProperty(item);
-            return Format != null 
+            return Format != null
                 ? Format(val)
                 : val?.ToString();
         }

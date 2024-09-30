@@ -53,7 +53,7 @@
         {
             bool Asc = sortArgs.Ascending ?? true;
 
-            query.Sort = (sortArgs.SortExpression ?? "") + (Asc ? " asc" : " desc");
+            query.Sort = (sortArgs.SortString ?? "") + (Asc ? " asc" : " desc");
 
             pagination.SetPage(1);
         }

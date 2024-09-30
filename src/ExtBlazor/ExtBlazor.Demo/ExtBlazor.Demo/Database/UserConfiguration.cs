@@ -176,7 +176,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 Changed = changed,
                 LastLogin = login,
                 Admin = admin
-            }); 
+            });
         };
         builder.HasData(users);
     }

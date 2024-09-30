@@ -59,7 +59,7 @@ public class UserService(ExDbContext dbContext) : IUserService
             Console.WriteLine(ex.StackTrace);
             throw;
         }
-    }   
+    }
 
     public async Task<UserDto?> GetUser(int id, CancellationToken ct = default)
     {

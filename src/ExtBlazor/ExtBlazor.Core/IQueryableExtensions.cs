@@ -62,7 +62,7 @@ public static class IQueryableExtensions
     {
         var parameterExpression = Expression.Parameter(typeof(T), "p");
         var memberExpression = property.Split('.').Aggregate<string, Expression>(parameterExpression, Expression.PropertyOrField);
-        var lambdaExpression = Expression.Lambda(memberExpression, parameterExpression);        
+        var lambdaExpression = Expression.Lambda(memberExpression, parameterExpression);
 
         var types = new Type[]
         {
@@ -72,7 +72,7 @@ public static class IQueryableExtensions
 
         var expression = Expression.Call(
             typeof(Queryable),
-            method, 
+            method,
             types,
             queryable.Expression,
             lambdaExpression);
