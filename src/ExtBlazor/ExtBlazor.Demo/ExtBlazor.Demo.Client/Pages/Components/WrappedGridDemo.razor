@@ -7,19 +7,20 @@
     <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
     <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
-<WrappedGrid Query="query" @ref=grid>
+<WrappedGrid Query="query" @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
     <Column Property="u => u.Id" />
-    <Column Property="u => u.Name" />
+    <Column Property="u => u.Name" DefaultSortColumn="true" />
     <Column Property="u => u.Username" />
     <Column Property="u => u.ContactInformation.Email" Title="E-mail" Context="item">
         <a href="mailto:@item.ContactInformation.Email">@item.ContactInformation.Email</a>
     </Column>
     <Column Property="u => u.ContactInformation.Phone" Format=FormatPhoneNumber />
-    <Column Property="u => u.Created" Format=FormatDate DefaultSortColumn="true" DefaultSortDirectionAsc="false" />
+    <Column Property="u => u.Created" Format=FormatDate />
     <Column Property="u => u.LastLogin" Title="Last login" Format=FormatDateTime />
     <TemplateColumn Title="E-mail length" Context="item" Sortable="false">
         @item.ContactInformation.Email.Length
     </TemplateColumn>
+    <Column Property="u => u.Admin" />
 </WrappedGrid>
 @code {
     private GetUserDtosQuery query = new();

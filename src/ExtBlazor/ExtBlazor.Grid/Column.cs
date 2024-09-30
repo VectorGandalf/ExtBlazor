@@ -7,9 +7,10 @@ public class Column<TItem, TProperty> : TemplateColumn<TItem>
 {
     [Parameter, EditorRequired]
     public required Expression<Func<TItem, TProperty>> Property { get; set; }
-
     [Parameter]
     public Func<TProperty, string?>? Format { get; set; }
+    [Parameter]
+    public Func<TItem?, string?>? Href { get; set; }
 
     private Func<TItem, TProperty>? compiledProperty;
     private string? propertyName;
@@ -22,7 +23,7 @@ public class Column<TItem, TProperty> : TemplateColumn<TItem>
             {
                 builder.OpenComponent(0, typeof(PropertyColumnTemple<TItem, TProperty>));
                 builder.AddAttribute(1, "Column", this);
-                builder.AddAttribute(2, "Value", item);
+                builder.AddAttribute(2, "Item", item);
                 builder.CloseComponent();
             };
         }

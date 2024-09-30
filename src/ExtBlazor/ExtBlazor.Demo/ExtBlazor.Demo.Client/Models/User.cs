@@ -10,4 +10,5 @@ public class User
     public DateTime Created { get; set; }
     public DateTime Changed { get; set; }
     public DateTime? LastLogin { get; set; }
+    public bool Admin { get; set; }
 }

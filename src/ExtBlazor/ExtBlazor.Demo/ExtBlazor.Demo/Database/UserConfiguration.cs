@@ -99,7 +99,15 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             "Anna Greta",
             "Daniel",
             "Sten",
-            "Sture"
+            "Sture",
+            "Steve",
+            "Lukas",
+            "Linda",
+            "Lina",
+            "Fredrik",
+            "Fin",
+            "Nicole",
+            "Ingvar"
         };
 
         var lastnames = new List<string>()
@@ -156,7 +164,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             var changed = created.AddDays(Random.Shared.Next(1, (int)Math.Floor(DateTime.Now.Subtract(created).TotalDays)));
 
             var login = created.AddDays(Random.Shared.Next(1, (int)Math.Floor(DateTime.Now.Subtract(created).TotalDays)));
-
+            var admin = Random.Shared.Next(108) == 9;
             users.Add(new User
             {
                 Name = firstName + " " + lastName,
@@ -166,7 +174,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 Phone = "+" + Random.Shared.Next(10, 99).ToString() + Random.Shared.Next(700000000, 799999999).ToString(),
                 Created = created,
                 Changed = changed,
-                LastLogin = login
+                LastLogin = login,
+                Admin = admin
             }); 
         };
         builder.HasData(users);

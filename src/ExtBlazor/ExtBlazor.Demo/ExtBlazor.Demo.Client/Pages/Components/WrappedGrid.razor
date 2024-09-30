@@ -9,7 +9,7 @@
         Page: @(pagination.CurrentPage)/@(pagination.Pages)
     </span>
     <span>
-        Page size: 
+        Page size:
         <select @bind=pagination.Take class="form-select w-auto">
             <option value="5">5</option>
             <option value="10">10</option>
@@ -19,9 +19,11 @@
         </select>
     </span>
 </div>
-<Grid Items="items" OnColumnEvent="args => HandleColumnEvent(args)" CssClass="table table-striped w-100" DefaultHeadTempate="typeof(CustomHeadTemplate<TItem>)">
+
+<Grid Items="items" OnColumnEvent=OnColumnEvent CssClass="table table-striped w-100" DefaultHeadTempate="typeof(CustomHeadTemplate<TItem>)" RowCssClass=RowCssClass>
     @ChildContent
 </Grid>
+
 <nav>
     <div class="d-flex justify-content-center">
         <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.First">&#171;</button>
@@ -36,6 +38,9 @@
 
     [Parameter, EditorRequired]
     public required IPageQuery<TItem> Query { get; set; }
+
+    [Parameter]
+    public Func<TItem, string?> RowCssClass { get; set; } = item => null;
 
     private IEnumerable<TItem> items = [];
 
@@ -53,14 +58,11 @@
         base.OnInitialized();
     }
 
-    private void HandleColumnEvent(IColumnEventArgs args)
+    private void OnColumnEvent(IColumnEventArgs args)
     {
         if (args is ColumnSortEventArgs sortArgs && sortArgs.SortExpression != null)
         {
-            bool Asc = sortArgs.Ascending ?? true;
-
-            Query.Sort = (sortArgs.SortExpression ?? "") + (Asc ? " asc" : " desc");
-
+            Query.Sort = (sortArgs.SortExpression ?? "") + (sortArgs.Ascending ?? true ? " asc" : " desc");
             pagination.SetPage(1);
         }
     }
@@ -80,7 +82,7 @@
         else
         {
             pagination.TotalCount = 0;
-            items = [];    
+            items = [];
         }
 
         StateHasChanged();

@@ -19,6 +19,8 @@ public partial class Grid<TItem>
     [Parameter]
     public Type DefaultHeadTempate { get; set; } = typeof(DefaultHeadTemplate<TItem>);
 
+    [Parameter]
+    public Func<TItem, string?> RowCssClass { get; set; } = item => null;
     public string? SortExpression { get; private set; }
 
     private List<ColumnBase<TItem>> Columns { get; set; } = [];

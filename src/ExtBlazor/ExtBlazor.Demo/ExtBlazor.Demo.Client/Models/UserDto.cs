@@ -9,6 +9,7 @@ public record UserDto
     public DateTime Created { get; init; }
     public DateTime Changed { get; init; }
     public DateTime? LastLogin { get; init; }
+    public bool Admin { get; set; }
 }
 
 public record ContactInformationDto

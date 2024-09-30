@@ -3,26 +3,29 @@
 <CascadingValue Value="this" Name="ParentGrid">
     @ChildContent
     <table class=@CssClass>
-        <thead>
-            <tr>
-                @foreach (var column in Columns)
-                {
-                    @if (column.HeadTemplate != null)
-                    {
-                        <th>
-                            @column.HeadTemplate(column)
-                        </th>
-                    }
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Items)
-            {
+        @if (Columns.Any(_ => _.HeadTemplate != null))
+        {
+            <thead>
                 <tr>
                     @foreach (var column in Columns)
                     {
-                        <td>
+                        @if (column.HeadTemplate != null)
+                        {
+                            <th class="@column.HeadCssClass">
+                                @column.HeadTemplate(column)
+                            </th>
+                        }
+                    }
+                </tr>
+            </thead>
+        }
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr class="@RowCssClass(item)">
+                    @foreach (var column in Columns)
+                    {
+                        <td class="@column.ItemCssClass">
                             @if (column.ChildContent != null)
                             {
                                 @column.ChildContent(item)
@@ -38,7 +41,7 @@
                 <tr>
                     @foreach (var column in Columns)
                     {
-                        <td>
+                        <td class="column.FootCssClass">
                             @if (column.FootTemplate != null)
                             {
                                 @column.FootTemplate

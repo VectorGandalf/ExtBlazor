@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System.Data.Common;
 
 namespace ExtBlazor.Grid;
 
@@ -23,6 +22,14 @@ public abstract class ColumnBase<TItem> : ComponentBase
     public virtual RenderFragment<ColumnBase<TItem>>? HeadTemplate { get; set; }
     [Parameter]
     public virtual RenderFragment<ColumnBase<TItem>>? FootTemplate { get; set; }
+    [Parameter]
+    public string? RowCssClass { get; set; }
+    [Parameter]
+    public string? ItemCssClass { get; set; }
+    [Parameter]
+    public string? HeadCssClass { get; set; }
+    [Parameter]
+    public string? FootCssClass { get; set; }
     protected override async Task OnInitializedAsync()
     {
         if (Grid != null)

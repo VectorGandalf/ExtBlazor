@@ -1,0 +1,18 @@
+﻿@page "/users/{Id:int}"
+@using ExtBlazor.Demo.Client.Services
+@inject IQueryService queryService
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+<h3>@user?.Name</h3>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private UserDto? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        user = await queryService.Query(new GetUserQuery { Id = Id });
+    }
+}

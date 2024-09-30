@@ -9,11 +9,14 @@
     <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
     <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
-<Grid Items="items" OnColumnEvent="args => HandleColumnEvent(args)" CssClass="table table-striped w-100">
+<Grid Items="items"
+      OnColumnEvent="args => HandleColumnEvent(args)"
+      CssClass="table table-striped w-100"
+      RowCssClass=@(i => i.Admin ? "admin" : null)>
     <Column Property="u => u.Id" />
-    <Column Property="u => u.Name" DefaultSortColumn="true" />
+    <Column Property="u => u.Name" DefaultSortColumn="true" Href=@(u => "/users/" + u.Id) />
     <Column Property="u => u.Username" />
-    <Column Property="u => u.Email" Title="E-Mail" />
+    <Column Property="u => u.Email" Title="E-Mail" Href=@(u => "mailto:" + u.Email) />
     <Column Property="u => u.Phone" Format="@(u => u.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " "))" />
     <Column Property="u => u.Created" Format="@(u => u.ToString("yyyy-MM-dd"))" />
     <Column Property="u => u.LastLogin" Title="Last login" Format="@(u => u?.ToString("yyyy-MM-dd HH:mm"))" Sortable="false" />
@@ -30,9 +33,7 @@
             TotalCount = 0
         };
 
-    private GetUsersQuery query = new()
-    {
-    };
+    private GetUsersQuery query = new();
 
     protected override void OnInitialized()
     {

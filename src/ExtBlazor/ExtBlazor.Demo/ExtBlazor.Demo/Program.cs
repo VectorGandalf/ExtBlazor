@@ -65,6 +65,7 @@ static async Task UpdateDatabaseSchema(WebApplication app)
 
 static void AddEndPoints(WebApplication app)
 {
-    app.MapGet("/api/users", async ([AsParameters] GetUsersQuery query, IUserService users) => await users.GetUsers(query));
-    app.MapGet("/api/usersdtos", async ([AsParameters] GetUserDtosQuery query, IUserService users) => await users.GetUserDtos(query));
+    app.MapGet("/api/users", async ([AsParameters] GetUsersQuery query, IUserService users, CancellationToken ct) => await users.GetUsers(query, ct));
+    app.MapGet("/api/usersdtos", async ([AsParameters] GetUserDtosQuery query, IUserService users, CancellationToken ct) => await users.GetUserDtos(query, ct));
+    app.MapGet("/api/users/{id:int}", async (int id, IUserService users, CancellationToken ct) => await users.GetUser(id, ct));
 }

@@ -27,3 +27,8 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+table > tbody > tr.admin > td {
+    background-color: #fff699 !important;
+    border-bottom-color: #ddd477 !important;
+}
