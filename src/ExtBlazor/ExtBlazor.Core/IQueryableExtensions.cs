@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Linq;
+using System.Linq.Expressions;
 
 namespace ExtBlazor.Core;
 
@@ -14,11 +15,11 @@ public static class IQueryableExtensions
     }
 
     public static Page<T> Page<T>(this IQueryable<T> query,
-        string? sortPropertiesExpression,
+        IEnumerable<SortExpression>? sortPropertiesExpression,
         int? skip,
         int? take)
     {
-        query = query.Sort(sortPropertiesExpression);
+        query = query.Sort((sortPropertiesExpression ?? []).ToArray());
 
         var items = (take != null && skip != null)
             ? query.Skip((int)skip).Take((int)take).ToList()
@@ -30,17 +31,16 @@ public static class IQueryableExtensions
     }
 
     public static IQueryable<T> Sort<T>(this IQueryable<T> query,
-        string? sort)
+        SortExpression[] sort)
     {
-        var sortPropertyExpressions = Parse(sort);
-        for (int i = 0; i < sortPropertyExpressions.Length; i++)
+        for (int i = 0; i < sort.Length; i++)
         {
-            var (property, ascending) = sortPropertyExpressions[i];
+            var sortExpression = sort[i];
 
             var isFirst = i == 0;
-            var method = ParseMethod(ascending, isFirst);
+            var method = ParseMethod(sortExpression.Ascending ?? true, isFirst);
 
-            query = query.OrderBy(method, property);
+            query = query.OrderBy(method, sortExpression.Property);
         }
 
         return query;

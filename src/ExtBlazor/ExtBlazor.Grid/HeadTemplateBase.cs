@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 
 namespace ExtBlazor.Grid;
-public abstract class HeadTemplateBase<TItem> : ComponentBase
+public abstract class HeadTemplateBase : ComponentBase
 {
     [Parameter]
-    public required ColumnBase<TItem> Column { get; set; }
-
-    [CascadingParameter(Name = "ParentGrid")]
-    protected Grid<TItem> Grid { get; set; } = null!;
+    public required IColumn Column { get; set; }
 }

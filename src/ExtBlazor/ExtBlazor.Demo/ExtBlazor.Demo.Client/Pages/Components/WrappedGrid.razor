@@ -1,9 +1,10 @@
 ﻿@using ExtBlazor.Core
-@using ExtBlazor.Demo.Client.Services
 @using ExtBlazor.Paginators
-@inject IQueryService queryService
+@using ExtBlazor.RemoteMediator
+@inject IRemoteMediator mediator
 @attribute [CascadingTypeParameter(nameof(TItem))]
 @typeparam TItem
+
 <div class="d-flex justify-content-between">
     <span>
         Page: @(pagination.CurrentPage)/@(pagination.Pages)
@@ -19,8 +20,7 @@
         </select>
     </span>
 </div>
-
-<Grid Items="items" OnColumnEvent=OnColumnEvent CssClass="table table-striped w-100" DefaultHeadTempate="typeof(CustomHeadTemplate<TItem>)" RowCssClass=RowCssClass>
+<Grid Items="items" OnColumnEvent=OnColumnEvent CssClass="table table-striped w-100" DefaultHeadTempate="typeof(CustomHeadTemplate)" RowCssClass=RowCssClass Sort="@Query.Sort">
     @ChildContent
 </Grid>
 
@@ -37,12 +37,16 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]
-    public required IPageQuery<TItem> Query { get; set; }
+    public required IDemoPageQuery<TItem> Query { get; set; }
 
     [Parameter]
     public Func<TItem, string?> RowCssClass { get; set; } = item => null;
 
+    private Grid<TItem>? grid;
+
     private IEnumerable<TItem> items = [];
+
+    private bool loading;
 
     private Pagination pagination = new()
         {
@@ -53,39 +57,54 @@
 
     protected override void OnInitialized()
     {
+        pagination.Skip = Query.Skip ?? 0;
+        pagination.Take = Query.Take ?? 10;
         pagination.OnNavigation = async () => await UpdateItems();
-        // pagination.SetPage(1);
+
+        if (!(grid?.Sort ?? []).Any())
+        {
+            pagination.SetPage(1);
+        }
+
         base.OnInitialized();
     }
 
     private void OnColumnEvent(IColumnEventArgs args)
     {
-        if (args is ColumnSortEventArgs sortArgs && sortArgs.SortString != null)
+        if (args is ColumnSortEventArgs sortArgs)
         {
-            Query.Sort = (sortArgs.SortString ?? "") + (sortArgs.Ascending ?? true ? " asc" : " desc");
+            Query.Sort = sortArgs.SortExpressions;
             pagination.SetPage(1);
         }
     }
 
     private async Task UpdateItems()
     {
-        //bind query
-        Query.Skip = pagination.Skip;
-        Query.Take = pagination.Take;
-
-        var pagedSet = await queryService.Query(Query);
-        if (pagedSet != null)
+        try
         {
-            pagination.TotalCount = pagedSet.Total;
-            items = pagedSet.Items;
-        }
-        else
-        {
-            pagination.TotalCount = 0;
-            items = [];
-        }
+            loading = true;
+            StateHasChanged();
 
-        StateHasChanged();
+            Query.Skip = pagination.Skip;
+            Query.Take = pagination.Take;
+
+            var pagedSet = await mediator.Send(Query);
+            if (pagedSet != null)
+            {
+                pagination.TotalCount = pagedSet.Total;
+                items = pagedSet.Items;
+            }
+            else
+            {
+                pagination.TotalCount = 0;
+                items = [];
+            }
+        }
+        finally
+        {
+            loading = false;
+            StateHasChanged();
+        }
     }
 
     public async Task Update()

@@ -1,8 +1,6 @@
-﻿using ExtBlazor.Core;
+﻿namespace ExtBlazor.Demo.Client.Models;
 
-namespace ExtBlazor.Demo.Client.Models;
-
-public class GetUserQuery : IQuery<UserDto>
+public class GetUserQuery : IDemoRequest<UserDto?>
 {
     public int Id { get; set; }
 }

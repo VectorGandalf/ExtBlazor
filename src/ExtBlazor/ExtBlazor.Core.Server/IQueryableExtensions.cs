@@ -17,12 +17,12 @@ public static class IQueryableExtensions
 
 
     public static async Task<Page<T>> PageAsync<T>(this IQueryable<T> query,
-        string? sortPropertyExpressions,
+        IEnumerable<SortExpression>? sortPropertyExpressions,
         int? skip,
         int? take,
         CancellationToken ct = default)
     {
-        query = query.Sort(sortPropertyExpressions);
+        query = query.Sort((sortPropertyExpressions ?? []).ToArray());
         var items = (take != null && skip != null)
             ? await query.Skip((int)skip).Take((int)take).ToListAsync(ct)
             : await query.ToListAsync(ct);

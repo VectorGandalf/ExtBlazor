@@ -1,6 +1,6 @@
 ﻿@page "/users/{Id:int}"
-@using ExtBlazor.Demo.Client.Services
-@inject IQueryService queryService
+@using ExtBlazor.RemoteMediator
+@inject IRemoteMediator mediator
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
 <h3>@user?.Name</h3>
 
@@ -13,6 +13,6 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        user = await queryService.Query(new GetUserQuery { Id = Id });
+        user = await mediator.Send(new GetUserQuery { Id = Id });
     }
 }

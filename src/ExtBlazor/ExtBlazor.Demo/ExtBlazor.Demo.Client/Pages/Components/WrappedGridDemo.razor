@@ -9,15 +9,15 @@
 </div>
 <WrappedGrid Query="query" @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
     <Column Property="u => u.Id" />
-    <Column Property="u => u.Name" DefaultSortColumn="true" />
+    <Column Property="u => u.Name" Href=@(u => "/users/" + u.Id) />
     <Column Property="u => u.Username" />
     <Column Property="u => u.ContactInformation.Email" Title="E-mail" Context="item">
         <a href="mailto:@item.ContactInformation.Email">@item.ContactInformation.Email</a>
     </Column>
-    <Column Property="u => u.ContactInformation.Phone" Format=FormatPhoneNumber />
-    <Column Property="u => u.Created" Format=FormatDate />
-    <Column Property="u => u.LastLogin" Title="Last login" Format=FormatDateTime />
-    <TemplateColumn Title="E-mail length" Context="item" Sortable="false">
+    <Column Property="u => u.ContactInformation.Phone" Format=Formaters.FormatPhoneNumber />
+    <Column Property="u => u.Created" Format=Formaters.FormatDate />
+    <Column Property="u => u.LastLogin" Title="Last login" Format=Formaters.FormatDateTime />
+    <TemplateColumn Title="E-mail length" Context="item">
         @item.ContactInformation.Email.Length
     </TemplateColumn>
     <Column Property="u => u.Admin" />
@@ -30,16 +30,16 @@
     private async Task Enter(KeyboardEventArgs e)
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
             await Search();
+        }
     }
 
     private async Task Search()
     {
         if (grid != null)
+        {
             await grid.Update();
-    }
-
-    private string? FormatPhoneNumber(string phoneNumber) => phoneNumber.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " ");
-    private string? FormatDate(DateTime date) => date.ToString("yyyy-MM-dd");
-    private string? FormatDateTime(DateTime? dateTime) => dateTime?.ToString("yyyy-MM-dd HH:mm");
+        }
+    }    
 }

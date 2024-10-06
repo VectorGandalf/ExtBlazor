@@ -22,6 +22,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="readme.md" Pack="true" PackagePath=""/>
+		<None Include="readme.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\ExtBlazor.Core\ExtBlazor.Core.csproj" />
 	</ItemGroup>
 </Project>

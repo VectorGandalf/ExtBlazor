@@ -1,11 +1,12 @@
 ﻿namespace ExtBlazor.Grid;
 
-public abstract class SortableHeadTemplateBase<TItem> : HeadTemplateBase<TItem>
+public abstract class SortableHeadTemplateBase : HeadTemplateBase
 {
     protected bool Ascending { get; set; }
+
     protected virtual Task OnClick()
     {
-        if (Grid.SortExpression == Column.SortString)
+        if (Column.ColumnEventReciver?.Sort.Any(_ => _.Property == Column.PropertyName) ?? false)
         {
             Ascending = !Ascending;
         }
@@ -13,12 +14,13 @@ public abstract class SortableHeadTemplateBase<TItem> : HeadTemplateBase<TItem>
         {
             Ascending = true;
         };
+
         return Column.Sort(Ascending);
     }
 
     protected override void OnInitialized()
     {
-        Ascending = Column.DefaultSortDirectionAsc;
+        Ascending = Column.ColumnEventReciver?.Sort.FirstOrDefault(_ => _.Property == Column.PropertyName)?.Ascending ?? false;
         base.OnInitialized();
     }
 }

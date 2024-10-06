@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using ExtBlazor.Core;
+using Microsoft.AspNetCore.Components;
 
 namespace ExtBlazor.Grid;
 [CascadingTypeParameter(nameof(TItem))]
-public partial class Grid<TItem>
+public partial class Grid<TItem> : IColumnEventSignalTarget
 {
     [Parameter]
     public IEnumerable<TItem> Items { get; set; } = [];
@@ -17,11 +18,16 @@ public partial class Grid<TItem>
     public string? CssClass { get; set; }
 
     [Parameter]
-    public Type DefaultHeadTempate { get; set; } = typeof(DefaultHeadTemplate<TItem>);
+    public Type DefaultHeadTempate { get; set; } = typeof(DefaultHeadTemplate);
 
     [Parameter]
     public Func<TItem, string?> RowCssClass { get; set; } = item => null;
-    public string? SortExpression { get; private set; }
+
+    [Parameter]
+    public IEnumerable<SortExpression> Sort { get; set; } = [];
+
+    [Parameter]
+    public bool MultiColumnSort { get; set; } = false;
 
     private List<ColumnBase<TItem>> Columns { get; set; } = [];
 
@@ -31,11 +37,12 @@ public partial class Grid<TItem>
         StateHasChanged();
     }
 
-    internal async Task SignalColumnEvent(IColumnEventArgs args)
+    public async Task Signal(IColumnEventArgs args)
     {
         if (args is ColumnSortEventArgs sortArgs)
         {
-            SortExpression = sortArgs.SortString;
+            Sort = sortArgs.SortExpressions;
+
             StateHasChanged();
         }
 

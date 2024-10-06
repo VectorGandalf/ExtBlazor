@@ -1,6 +1,7 @@
 ﻿@using ExtBlazor.Core
 @using ExtBlazor.Paginators
-@inject HttpClient httpClient
+@using ExtBlazor.RemoteMediator
+@inject IRemoteMediator mediator
 <h2>Grid demo 1</h2>
 <p>
     Simple grid demo.
@@ -12,18 +13,20 @@
 <Grid Items="items"
       OnColumnEvent="args => HandleColumnEvent(args)"
       CssClass="table table-striped w-100"
-      RowCssClass=@(i => i.Admin ? "admin" : null)>
+      RowCssClass=@(i => i.Admin ? "admin" : null)
+      @ref=grid>
     <Column Property="u => u.Id" />
-    <Column Property="u => u.Name" DefaultSortColumn="true" Href=@(u => "/users/" + u.Id) />
+    <Column Property="u => u.Name" Href=@(u => "/users/" + u.Id) />
     <Column Property="u => u.Username" />
     <Column Property="u => u.Email" Title="E-Mail" Href=@(u => "mailto:" + u.Email) />
-    <Column Property="u => u.Phone" Format="@(u => u.Insert(3, " (0) ").Insert(11, "-").Insert(14, " ").Insert(17, " "))" />
-    <Column Property="u => u.Created" Format="@(u => u.ToString("yyyy-MM-dd"))" />
-    <Column Property="u => u.LastLogin" Title="Last login" Format="@(u => u?.ToString("yyyy-MM-dd HH:mm"))" Sortable="false" />
+    <Column Property="u => u.Phone" Format=Formaters.FormatPhoneNumber />
+    <Column Property="u => u.Created" Format=Formaters.FormatDate />
+    <Column Property="u => u.LastLogin" Title="Last login" Format=Formaters.FormatDateTime Sortable="false" />
 </Grid>
 <SimplePagination Pagination="pagination" Padding="5" NavCssClass="pagination" ActiveCssClass="active" ButtonCssClass="page-item page-link" SelectCssClass="form-select w-auto me-5" />
 @code
 {
+    private Grid<User>? grid;
     private IEnumerable<User> items = [];
 
     private Pagination pagination = new()
@@ -51,10 +54,7 @@
     {
         if (args is ColumnSortEventArgs sortArgs)
         {
-            bool Asc = sortArgs.Ascending ?? true;
-
-            query.Sort = (sortArgs.SortString ?? "") + (Asc ? " asc" : " desc");
-
+            query.Sort = sortArgs.SortExpressions;
             pagination.SetPage(1);
         }
     }
@@ -72,12 +72,11 @@
         query.Skip = pagination.Skip;
         query.Take = pagination.Take;
 
-        var url = $"api/users" + query.ToQueryString();
-        var pagedSet = await httpClient.GetFromJsonAsync<Page<User>>(url);
-        if (pagedSet != null)
+        var page = await mediator.Send(query);
+        if (page != null)
         {
-            pagination.TotalCount = pagedSet.Total;
-            items = pagedSet.Items;
+            pagination.TotalCount = page.Total;
+            items = page.Items;
             StateHasChanged();
         }
     }

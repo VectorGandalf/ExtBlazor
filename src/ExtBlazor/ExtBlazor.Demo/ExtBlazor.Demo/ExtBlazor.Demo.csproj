@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ExtBlazor.Core.Server\ExtBlazor.Core.Server.csproj" />
+    <ProjectReference Include="..\..\ExtBlazor.RemoteMediator.Server\ExtBlazor.RemoteMediator.Server.csproj" />
     <ProjectReference Include="..\ExtBlazor.Demo.Client\ExtBlazor.Demo.Client.csproj" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">

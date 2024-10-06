@@ -1,6 +1,7 @@
-﻿namespace ExtBlazor.Grid;
+﻿using ExtBlazor.Core;
+
+namespace ExtBlazor.Grid;
 public class ColumnSortEventArgs : IColumnEventArgs
 {
-    public required string? SortString { get; set; }
-    public bool? Ascending { get; set; }
+    public required IEnumerable<SortExpression> SortExpressions { get; set; }
 }

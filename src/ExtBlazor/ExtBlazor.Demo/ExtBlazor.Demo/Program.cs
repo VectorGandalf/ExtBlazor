@@ -2,6 +2,8 @@ using ExtBlazor.Demo.Client.Models;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
 using ExtBlazor.Demo.Services;
+using ExtBlazor.RemoteMediator.Server;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,19 @@ builder.Services
 
 builder.Services
     .AddControllers();
+
+builder.Services.AddMediatR(c =>
+{
+    c.RegisterServicesFromAssembly(typeof(UserService).Assembly);
+});
+
+builder.Services.AddRemoteMediatorServer(config =>
+{
+    config.MediatorCallback = async (IBaseRequest request, IMediator mediator) =>
+    {
+        return await mediator.Send(request);
+    };
+});
 
 var app = builder.Build();
 
@@ -41,7 +56,7 @@ app.UseAntiforgery();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-AddEndPoints(app);
+app.MapRemoteMediatorEndPoint();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
@@ -61,11 +76,4 @@ static async Task UpdateDatabaseSchema(WebApplication app)
         await db.Database.MigrateAsync();
         Microsoft.Data.Sqlite.SqliteConnection.ClearAllPools();
     }
-}
-
-static void AddEndPoints(WebApplication app)
-{
-    app.MapGet("/api/users", async ([AsParameters] GetUsersQuery query, IUserService users, CancellationToken ct) => await users.GetUsers(query, ct));
-    app.MapGet("/api/usersdtos", async ([AsParameters] GetUserDtosQuery query, IUserService users, CancellationToken ct) => await users.GetUserDtos(query, ct));
-    app.MapGet("/api/users/{id:int}", async (int id, IUserService users, CancellationToken ct) => await users.GetUser(id, ct));
 }
