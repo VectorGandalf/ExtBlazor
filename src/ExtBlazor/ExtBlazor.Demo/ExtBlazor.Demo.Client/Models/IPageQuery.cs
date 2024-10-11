@@ -3,7 +3,7 @@ using ExtBlazor.RemoteMediator;
 using MediatR;
 
 namespace ExtBlazor.Demo.Client.Models;
-public interface IDemoPageQuery<TItem> :
+public interface IPageQuery<TItem> :
     IRemoteRequest<Page<TItem>>,
     IRequest<Page<TItem>>,
     IPageParameters

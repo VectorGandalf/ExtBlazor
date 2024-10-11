@@ -1,7 +1,11 @@
-﻿@using ExtBlazor.Core
+﻿@page "/grid"
+@using ExtBlazor.Core
+@using ExtBlazor.Demo.Client.Services
 @using ExtBlazor.Paginators
 @using ExtBlazor.RemoteMediator
 @inject IRemoteMediator mediator
+@inject IStashService stash
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
 <h2>Grid demo 1</h2>
 <p>
     Simple grid demo.
@@ -14,7 +18,7 @@
       OnColumnEvent="args => HandleColumnEvent(args)"
       CssClass="table table-striped w-100"
       RowCssClass=@(i => i.Admin ? "admin" : null)
-      @ref=grid>
+      Sort="query.Sort ?? []">
     <Column Property="u => u.Id" />
     <Column Property="u => u.Name" Href=@(u => "/users/" + u.Id) />
     <Column Property="u => u.Username" />
@@ -26,23 +30,26 @@
 <SimplePagination Pagination="pagination" Padding="5" NavCssClass="pagination" ActiveCssClass="active" ButtonCssClass="page-item page-link" SelectCssClass="form-select w-auto me-5" />
 @code
 {
-    private Grid<User>? grid;
     private IEnumerable<User> items = [];
 
-    private Pagination pagination = new()
-        {
-            Take = 10,
-            Skip = 0,
-            TotalCount = 0
-        };
+    private Pagination pagination = new();
 
     private GetUsersQuery query = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        var memoryQuery = stash.Get<GetUsersQuery>("query");
+        if (memoryQuery != null)
+        {
+            query = memoryQuery;
+        }
+
+        pagination.Take = query.Take ?? 10;
+        pagination.Skip = query.Skip ?? 0;
         pagination.OnNavigation = async () => await UpdateItems();
-        pagination.SetPage(1);
-        base.OnInitialized();
+        await UpdateItems();
+
+        await base.OnInitializedAsync();
     }
 
     private void Search()
@@ -71,7 +78,7 @@
     {
         query.Skip = pagination.Skip;
         query.Take = pagination.Take;
-
+        stash.Put("query", query);
         var page = await mediator.Send(query);
         if (page != null)
         {

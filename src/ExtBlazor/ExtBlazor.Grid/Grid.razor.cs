@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace ExtBlazor.Grid;
 [CascadingTypeParameter(nameof(TItem))]
-public partial class Grid<TItem> : IColumnEventSignalTarget
+public partial class Grid<TItem> : ISortable
 {
     [Parameter]
     public IEnumerable<TItem> Items { get; set; } = [];

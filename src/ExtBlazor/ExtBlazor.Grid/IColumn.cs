@@ -5,6 +5,6 @@ public interface IColumn
     string? Title { get; set; }
     string? PropertyName { get; }
     bool Sortable { get; }
-    IColumnEventSignalTarget? ColumnEventReciver { get; }
+    ISortable? ColumnEventReciver { get; }
     Task Sort(bool? ascending);
 }

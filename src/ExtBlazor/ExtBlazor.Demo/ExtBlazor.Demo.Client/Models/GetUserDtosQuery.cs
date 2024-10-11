@@ -2,7 +2,7 @@
 
 namespace ExtBlazor.Demo.Client.Models;
 
-public class GetUserDtosQuery : IDemoPageQuery<UserDto>
+public class GetUserDtosQuery : IPageQuery<UserDto>
 {
     public string? Search { get; set; }
     public int? Skip { get; set; }

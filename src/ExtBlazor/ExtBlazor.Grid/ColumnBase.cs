@@ -26,7 +26,7 @@ public abstract class ColumnBase<TItem> : ComponentBase, IColumn
 
     public virtual string? PropertyName => null;
 
-    public IColumnEventSignalTarget? ColumnEventReciver => Grid;
+    public ISortable? ColumnEventReciver => Grid;
 
     [Parameter]
     public virtual bool Sortable { get; set; } = false;

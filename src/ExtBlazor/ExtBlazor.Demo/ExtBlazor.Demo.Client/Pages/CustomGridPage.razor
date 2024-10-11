@@ -1,13 +1,17 @@
-﻿@using ExtBlazor.Core
-<h2>Wrapped Grid demo</h2>
+﻿@page "/customgrid"
+@using ExtBlazor.Core
+@using ExtBlazor.Demo.Client.Services
+@inject IStashService stash
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+<h2>Customized Grid demo</h2>
 <p>
-    The recomended way to use Grid component is to wrap it with the project specifics for easy use.
+    The recomended way to use Grid component is to <strong>wrap</strong> it with the project specific property values for easy use.
 </p>
 <div class="input-group w-50">
     <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
     <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
-<WrappedGrid Query="query" @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
+<CustomGrid Id="Demo_Id" Query=query @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
     <Column Property="u => u.Id" />
     <Column Property="u => u.Name" Href=@(u => "/users/" + u.Id) />
     <Column Property="u => u.Username" />
@@ -21,11 +25,21 @@
         @item.ContactInformation.Email.Length
     </TemplateColumn>
     <Column Property="u => u.Admin" />
-</WrappedGrid>
+</CustomGrid>
 @code {
     private GetUserDtosQuery query = new();
 
-    private WrappedGrid<UserDto>? grid;
+    private CustomGrid<UserDto>? grid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var stashedQuery = stash.Get<GetUserDtosQuery>("Demo_Id");
+        if (stashedQuery != null)
+        {
+            query = stashedQuery;
+        }
+        await base.OnInitializedAsync();
+    }
 
     private async Task Enter(KeyboardEventArgs e)
     {
@@ -41,5 +55,5 @@
         {
             await grid.Update();
         }
-    }    
+    }
 }

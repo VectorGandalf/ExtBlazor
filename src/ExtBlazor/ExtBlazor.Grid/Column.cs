@@ -77,15 +77,6 @@ public class Column<TItem, TProperty> : TemplateColumn<TItem>
         return null;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-        }
-
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
     public override Task Sort(bool? ascending)
     {
         if (propertyName == null || Grid == null)

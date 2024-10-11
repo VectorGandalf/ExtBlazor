@@ -8,7 +8,6 @@ else
     <text>@Column.Title</text>
 }
 @code {
-
     private MarkupString? SortHtml => Column.ColumnEventReciver?.Sort.Any(sortExpression => sortExpression.Property == Column.PropertyName) ?? false
     ? Ascending 
         ? (MarkupString)"&#8964;" 

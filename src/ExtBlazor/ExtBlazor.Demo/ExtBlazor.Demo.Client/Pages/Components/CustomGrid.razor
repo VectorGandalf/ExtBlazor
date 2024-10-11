@@ -1,7 +1,9 @@
 ﻿@using ExtBlazor.Core
+@using ExtBlazor.Demo.Client.Services
 @using ExtBlazor.Paginators
 @using ExtBlazor.RemoteMediator
 @inject IRemoteMediator mediator
+@inject IStashService stash
 @attribute [CascadingTypeParameter(nameof(TItem))]
 @typeparam TItem
 
@@ -34,10 +36,13 @@
 </nav>
 @code {
     [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]
-    public required IDemoPageQuery<TItem> Query { get; set; }
+    public required IPageQuery<TItem> Query { get; set; }
 
     [Parameter]
     public Func<TItem, string?> RowCssClass { get; set; } = item => null;
@@ -48,25 +53,17 @@
 
     private bool loading;
 
-    private Pagination pagination = new()
-        {
-            Take = 10,
-            Skip = 0,
-            TotalCount = 0
-        };
+    private Pagination pagination = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        pagination.Skip = Query.Skip ?? 0;
         pagination.Take = Query.Take ?? 10;
+        pagination.Skip = Query.Skip ?? 0;
         pagination.OnNavigation = async () => await UpdateItems();
 
-        if (!(grid?.Sort ?? []).Any())
-        {
-            pagination.SetPage(1);
-        }
+        await UpdateItems();
 
-        base.OnInitialized();
+        await base.OnInitializedAsync();
     }
 
     private void OnColumnEvent(IColumnEventArgs args)
@@ -87,6 +84,11 @@
 
             Query.Skip = pagination.Skip;
             Query.Take = pagination.Take;
+
+            if (Id != null)
+            {
+                stash.Put(Id, Query);
+            }
 
             var pagedSet = await mediator.Send(Query);
             if (pagedSet != null)

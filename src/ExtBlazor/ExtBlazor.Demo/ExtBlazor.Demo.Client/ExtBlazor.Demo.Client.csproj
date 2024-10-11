@@ -20,8 +20,4 @@
     <ProjectReference Include="..\..\ExtBlazor.RemoteMediator.Client\ExtBlazor.RemoteMediator.Client.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

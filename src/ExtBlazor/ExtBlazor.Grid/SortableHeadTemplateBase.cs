@@ -20,7 +20,11 @@ public abstract class SortableHeadTemplateBase : HeadTemplateBase
 
     protected override void OnInitialized()
     {
-        Ascending = Column.ColumnEventReciver?.Sort.FirstOrDefault(_ => _.Property == Column.PropertyName)?.Ascending ?? false;
+        Ascending = Column.ColumnEventReciver?
+            .Sort
+            .FirstOrDefault(i => i.Property == Column.PropertyName)?
+            .Ascending ?? false;
+
         base.OnInitialized();
     }
 }

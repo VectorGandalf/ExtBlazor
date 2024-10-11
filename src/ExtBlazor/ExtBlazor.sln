@@ -23,11 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Tests.Units", "Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Core.Server", "ExtBlazor.Core.Server\ExtBlazor.Core.Server.csproj", "{8DA2A35E-5013-4602-A4A2-9D93B7EB7EFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.RemoteMediator", "ExtBlazor.RemoteMediator\ExtBlazor.RemoteMediator.csproj", "{D3954D17-D80D-4ABB-814D-FA4326CF9F6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.RemoteMediator", "ExtBlazor.RemoteMediator\ExtBlazor.RemoteMediator.csproj", "{D3954D17-D80D-4ABB-814D-FA4326CF9F6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.RemoteMediator.Server", "ExtBlazor.RemoteMediator.Server\ExtBlazor.RemoteMediator.Server.csproj", "{5530803D-3F89-4DF7-81F6-DA563AB6425D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.RemoteMediator.Server", "ExtBlazor.RemoteMediator.Server\ExtBlazor.RemoteMediator.Server.csproj", "{5530803D-3F89-4DF7-81F6-DA563AB6425D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.RemoteMediator.Client", "ExtBlazor.RemoteMediator.Client\ExtBlazor.RemoteMediator.Client.csproj", "{0032DA89-8BA5-4F76-8777-890D93D4D3C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.RemoteMediator.Client", "ExtBlazor.RemoteMediator.Client\ExtBlazor.RemoteMediator.Client.csproj", "{0032DA89-8BA5-4F76-8777-890D93D4D3C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

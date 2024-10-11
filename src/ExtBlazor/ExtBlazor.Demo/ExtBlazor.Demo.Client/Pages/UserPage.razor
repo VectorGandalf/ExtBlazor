@@ -2,6 +2,7 @@
 @using ExtBlazor.RemoteMediator
 @inject IRemoteMediator mediator
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+
 <h3>@user?.Name</h3>
 
 @code {

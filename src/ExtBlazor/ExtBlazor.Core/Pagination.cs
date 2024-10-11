@@ -28,14 +28,16 @@ public class Pagination
         if (value != totalCount)
         {
             totalCount = value;
-            SetPage(1);
         }
     }
 
     private void SetTake(int value)
     {
-        take = value;
-        SetPage(1);
+        if (value != take)
+        {
+            take = value;
+            SetPage(1);
+        }
     }
 
     private void SetSkip(int value)
