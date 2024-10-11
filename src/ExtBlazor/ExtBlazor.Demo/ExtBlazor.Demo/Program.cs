@@ -1,4 +1,3 @@
-using ExtBlazor.Demo.Client.Models;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
 using ExtBlazor.Demo.Services;
