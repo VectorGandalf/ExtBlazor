@@ -38,7 +38,7 @@ public class StashService(IServiceProvider serviceProvider) : IStashService
         return default(T);
     }
 
-    public virtual void Clear() 
+    public virtual void Clear()
     {
         store = new();
     }
