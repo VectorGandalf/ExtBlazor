@@ -1,24 +1,28 @@
-﻿@page "/grid"
+﻿@page "/gridserver"
 @using ExtBlazor.Core
+@using ExtBlazor.Core.Server
+@using ExtBlazor.Demo.Client.Models
+@using ExtBlazor.Demo.Client.Pages.Components
 @using ExtBlazor.Demo.Client.Services
+@using ExtBlazor.Demo.Database
+@using ExtBlazor.Grid
 @using ExtBlazor.Paginators
-@using ExtBlazor.RemoteMediator
-@inject IRemoteMediator mediator
 @inject IStashService stash
-@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
-<h2>Grid demo WASM</h2>
+@inject ExDbContext db
+@rendermode InteractiveServer
+<h1>Grid demo server with DdContext</h1>
 <p>
     Simple grid demo.
 </p>
 <div class="input-group w-50">
-    <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
+    <input @bind=search class="form-control" @bind:event="oninput" @onkeydown=Enter>
     <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
 <Grid Items="items"
       OnColumnEvent="args => HandleColumnEvent(args)"
       CssClass="table table-striped w-100"
       RowCssClass=@(i => i.Admin ? "admin" : null)
-      Sort="query.Sort ?? []">
+      Sort="sort ?? []">
     <Column Property="u => u.Id" />
     <Column Property="u => u.Name" Href=@(u => "/users/" + u.Id) />
     <Column Property="u => u.Username" />
@@ -31,19 +35,18 @@
 @code
 {
     private IEnumerable<User> items = [];
-    private Pagination pagination = new();
-    private GetUsersQuery query = new();
+
+    private string? search;
+    private Pagination pagination = new() { Take = 10 };
+    private IEnumerable<SortExpression> sort = [];
 
     protected override async Task OnInitializedAsync()
     {
-        var memoryQuery = stash.Get<GetUsersQuery>("query");
-        if (memoryQuery != null)
+        if (stash.HasValue("stash"))
         {
-            query = memoryQuery;
+            (pagination, sort, search) = stash.Get<(Pagination, IEnumerable<SortExpression>, string)>("stash");
         }
 
-        pagination.Take = query.Take ?? 10;
-        pagination.Skip = query.Skip ?? 0;
         pagination.OnNavigation = async () => await UpdateItems();
         await UpdateItems();
 
@@ -59,7 +62,7 @@
     {
         if (args is ColumnSortEventArgs sortArgs)
         {
-            query.Sort = sortArgs.SortExpressions;
+            sort = sortArgs.SortExpressions;
             pagination.SetPage(1);
         }
     }
@@ -74,15 +77,30 @@
 
     private async Task UpdateItems()
     {
-        query.Skip = pagination.Skip;
-        query.Take = pagination.Take;
-        stash.Put("query", query);
-        var page = await mediator.Send(query);
-        if (page != null)
+        var queryable = db.Users.AsQueryable();
+        var tokens = search?.Split(' ') ?? [];
+
+        foreach (var token in tokens)
+        {
+            queryable = queryable.Where(user =>
+                user.Name.ToLower().Contains(token.ToLower()) ||
+                user.Phone.ToLower().Contains(token.ToLower()) ||
+                user.Email.ToLower().Contains(token.ToLower()) ||
+                user.Username.ToLower().Contains(token.ToLower()));
+        }
+
+        var page = await queryable.PageAsync(
+            sort, 
+            pagination.Skip, 
+            pagination.Take);
+
+        if(page is not null)
         {
             pagination.TotalCount = page.Total;
             items = page.Items;
-            StateHasChanged();
+            StateHasChanged(); 
         }
+
+        stash.Put("stash", (pagination, sort, search));
     }
 }

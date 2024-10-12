@@ -1,14 +1,15 @@
 ﻿using System.Net.Http.Json;
 
 namespace ExtBlazor.RemoteMediator.Client;
-public class HttpRemoteMediator(IHttpClientFactory httpClientFactory, HttpRemoteMediatorConfig settings) : IRemoteMediator
+public class HttpRemoteMediator(IHttpClientFactory httpClientFactory, HttpRemoteMediatorConfig settings) :
+    IRemoteMediator
 {
     public async Task<TResult?> Send<TResult>(IRemoteRequest<TResult> request, CancellationToken ct = default)
     {
         return (TResult?)(await SendHttp(request, ct));
     }
 
-    public async Task Send<TRequest>(TRequest request, CancellationToken ct = default) where TRequest : IRemoteRequest
+    public async Task Send(IRemoteRequest request, CancellationToken ct = default)
     {
         _ = await SendHttp(request, ct);
     }

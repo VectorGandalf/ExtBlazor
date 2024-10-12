@@ -6,7 +6,7 @@ public class StashService(IServiceProvider serviceProvider) : IStashService
 {
     private Dictionary<string, Dictionary<string, object>> store = new();
     private string? CurrentUri => serviceProvider.GetService<NavigationManager>()?.Uri;
-    public virtual void Put(string key, object value)
+    public void Put(string key, object value)
     {
         if (CurrentUri == null)
         {
@@ -25,7 +25,7 @@ public class StashService(IServiceProvider serviceProvider) : IStashService
             store[CurrentUri][key] = value;
         }
     }
-    public virtual T? Get<T>(string key)
+    public T? Get<T>(string key)
     {
         if (CurrentUri != null && store.ContainsKey(CurrentUri) && store[CurrentUri].ContainsKey(key))
         {
@@ -38,7 +38,18 @@ public class StashService(IServiceProvider serviceProvider) : IStashService
         return default(T);
     }
 
-    public virtual void Clear()
+    public bool HasValue(string key)
+    {
+        if (CurrentUri != null && store.ContainsKey(CurrentUri) && store[CurrentUri].ContainsKey(key))
+        {
+            var value = store[CurrentUri][key];
+            return value is not null;
+        }
+
+        return false;
+    }
+
+    public void Clear()
     {
         store = new();
     }

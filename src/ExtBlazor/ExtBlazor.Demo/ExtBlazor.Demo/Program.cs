@@ -1,3 +1,4 @@
+using ExtBlazor.Demo.Client.Services;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
 using ExtBlazor.Demo.Services;
@@ -33,6 +34,8 @@ builder.Services.AddRemoteMediatorServer(config =>
         return await mediator.Send(request);
     };
 });
+
+builder.Services.AddScoped<IStashService, StashService>();
 
 var app = builder.Build();
 
