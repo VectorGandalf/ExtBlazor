@@ -24,7 +24,7 @@
       RowCssClass=@(i => i.Admin ? "admin" : null)
       Sort="sort ?? []">
     <Column Property="u => u.Id" />
-    <Column Property="u => u.Name" Href=@(u => "/users/" + u.Id) />
+    <Column Property="u => u.Name" Href=@(u => "/usersserver/" + u.Id) />
     <Column Property="u => u.Username" />
     <Column Property="u => u.Email" Title="E-Mail" Href=@(u => "mailto:" + u.Email) />
     <Column Property="u => u.Phone" Format=Formaters.FormatPhoneNumber />
