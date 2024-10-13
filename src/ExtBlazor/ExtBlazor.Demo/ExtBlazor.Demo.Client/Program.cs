@@ -1,5 +1,5 @@
-using ExtBlazor.Demo.Client.Services;
 using ExtBlazor.RemoteMediator.Client;
+using ExtBlazor.Stash;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -10,5 +10,5 @@ builder.Services.AddHttpClient("Default", httpClient =>
 });
 
 builder.Services.AddRemoteMediatorClient();
-builder.Services.AddSingleton<IStashService, StashService>();
+builder.Services.AddStashService();
 await builder.Build().RunAsync();

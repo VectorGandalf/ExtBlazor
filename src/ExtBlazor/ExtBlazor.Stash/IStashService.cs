@@ -1,4 +1,4 @@
-﻿namespace ExtBlazor.Demo.Client.Services;
+﻿namespace ExtBlazor.Stash;
 
 public interface IStashService
 {

@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.RemoteMediator.Cl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Events", "ExtBlazor.Events\ExtBlazor.Events.csproj", "{A9B4D11B-B5BC-4376-8DFD-11D171ACEB1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Stash", "ExtBlazor.Stash\ExtBlazor.Stash.csproj", "{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{A9B4D11B-B5BC-4376-8DFD-11D171ACEB1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9B4D11B-B5BC-4376-8DFD-11D171ACEB1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9B4D11B-B5BC-4376-8DFD-11D171ACEB1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{5530803D-3F89-4DF7-81F6-DA563AB6425D} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
 		{0032DA89-8BA5-4F76-8777-890D93D4D3C1} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
 		{A9B4D11B-B5BC-4376-8DFD-11D171ACEB1E} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
+		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0756067-DC2E-41F0-A1B9-6D4D701B5B74}

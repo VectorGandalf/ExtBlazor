@@ -1,8 +1,8 @@
-using ExtBlazor.Demo.Client.Services;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
 using ExtBlazor.Demo.Services;
 using ExtBlazor.RemoteMediator.Server;
+using ExtBlazor.Stash;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,7 +35,7 @@ builder.Services.AddRemoteMediatorServer(config =>
     };
 });
 
-builder.Services.AddScoped<IStashService, StashService>();
+builder.Services.AddStashService();
 
 var app = builder.Build();
 

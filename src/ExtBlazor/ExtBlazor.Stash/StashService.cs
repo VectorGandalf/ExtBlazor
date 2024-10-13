@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace ExtBlazor.Demo.Client.Services;
+namespace ExtBlazor.Stash;
 
 public class StashService(IServiceProvider serviceProvider) : IStashService
 {
@@ -32,10 +33,10 @@ public class StashService(IServiceProvider serviceProvider) : IStashService
             var value = store[CurrentUri][key];
             return value is T
                 ? (T)value
-                : default(T);
+                : default;
         }
 
-        return default(T);
+        return default;
     }
 
     public bool HasValue(string key)
