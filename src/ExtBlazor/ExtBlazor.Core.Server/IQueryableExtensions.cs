@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
-using ExtBlazor.Core;
 
 namespace ExtBlazor.Core.Server;
 
@@ -14,7 +12,6 @@ public static class IQueryableExtensions
             pagingation.Skip,
             pagingation.Take,
             ct);
-
 
     public static async Task<Page<T>> PageAsync<T>(this IQueryable<T> query,
         IEnumerable<SortExpression>? sortPropertyExpressions,

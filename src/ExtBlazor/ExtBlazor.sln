@@ -29,9 +29,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.RemoteMediator.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.RemoteMediator.Client", "ExtBlazor.RemoteMediator.Client\ExtBlazor.RemoteMediator.Client.csproj", "{0032DA89-8BA5-4F76-8777-890D93D4D3C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Events", "ExtBlazor.Events\ExtBlazor.Events.csproj", "{A9B4D11B-B5BC-4376-8DFD-11D171ACEB1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Events", "ExtBlazor.Events\ExtBlazor.Events.csproj", "{A9B4D11B-B5BC-4376-8DFD-11D171ACEB1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Stash", "ExtBlazor.Stash\ExtBlazor.Stash.csproj", "{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtBlazor.Stash", "ExtBlazor.Stash\ExtBlazor.Stash.csproj", "{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Events.SignalR.Client", "ExtBlazor.Events.SignalR.Client\ExtBlazor.Events.SignalR.Client.csproj", "{28E39094-E08E-4EB7-9E2D-4B71036811E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtBlazor.Events.SignalR.Server", "ExtBlazor.Events.SignalR.Server\ExtBlazor.Events.SignalR.Server.csproj", "{CAA666CF-212D-46A0-9EEC-7E9BA481079F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +91,14 @@ Global
 		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28E39094-E08E-4EB7-9E2D-4B71036811E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28E39094-E08E-4EB7-9E2D-4B71036811E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28E39094-E08E-4EB7-9E2D-4B71036811E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28E39094-E08E-4EB7-9E2D-4B71036811E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA666CF-212D-46A0-9EEC-7E9BA481079F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA666CF-212D-46A0-9EEC-7E9BA481079F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA666CF-212D-46A0-9EEC-7E9BA481079F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA666CF-212D-46A0-9EEC-7E9BA481079F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +116,8 @@ Global
 		{0032DA89-8BA5-4F76-8777-890D93D4D3C1} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
 		{A9B4D11B-B5BC-4376-8DFD-11D171ACEB1E} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
 		{B5427A74-1DCC-4A2E-A72B-A7BED1A1EBBE} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
+		{28E39094-E08E-4EB7-9E2D-4B71036811E1} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
+		{CAA666CF-212D-46A0-9EEC-7E9BA481079F} = {6E4BD9ED-79B6-430D-B886-29B8CA138715}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0756067-DC2E-41F0-A1B9-6D4D701B5B74}
