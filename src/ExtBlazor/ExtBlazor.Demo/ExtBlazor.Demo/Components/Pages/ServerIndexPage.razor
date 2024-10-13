@@ -1,0 +1,11 @@
+﻿@page "/server"
+@using ExtBlazor.Demo.Client.Services
+@rendermode InteractiveServer
+@inject IStashService stash
+@code{
+    protected override Task OnInitializedAsync()
+    {
+        stash.Clear();
+        return base.OnInitializedAsync();
+    }
+}

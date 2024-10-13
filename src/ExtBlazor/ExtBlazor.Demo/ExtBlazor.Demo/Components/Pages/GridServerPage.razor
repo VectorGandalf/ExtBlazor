@@ -1,8 +1,7 @@
-﻿@page "/gridserver"
+﻿@page "/server/grid"
 @using ExtBlazor.Core
 @using ExtBlazor.Core.Server
 @using ExtBlazor.Demo.Client.Models
-@using ExtBlazor.Demo.Client.Pages.Components
 @using ExtBlazor.Demo.Client.Services
 @using ExtBlazor.Demo.Database
 @using ExtBlazor.Grid
@@ -24,7 +23,7 @@
       RowCssClass=@(i => i.Admin ? "admin" : null)
       Sort="sort ?? []">
     <Column Property="u => u.Id" />
-    <Column Property="u => u.Name" Href=@(u => "/usersserver/" + u.Id) />
+    <Column Property="u => u.Name" Href=@(u => "/server/users/" + u.Id) />
     <Column Property="u => u.Username" />
     <Column Property="u => u.Email" Title="E-Mail" Href=@(u => "mailto:" + u.Email) />
     <Column Property="u => u.Phone" Format=Formaters.FormatPhoneNumber />

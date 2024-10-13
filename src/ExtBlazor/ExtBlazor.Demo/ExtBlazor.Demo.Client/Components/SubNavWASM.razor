@@ -1,0 +1,21 @@
+﻿@using ExtBlazor.Demo.Client.Services
+@inject IStashService stash
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li>
+                    <a class="nav-link" href="/wasm/grid" @onclick=ClearStash>Grid</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="/wasm/customgrid" @onclick=ClearStash>Customized grid</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private void ClearStash(MouseEventArgs a) => stash.Clear();
+}

@@ -1,4 +1,4 @@
-﻿@page "/customgrid"
+﻿@page "/wasm/customgrid"
 @using ExtBlazor.Core
 @using ExtBlazor.Demo.Client.Services
 @inject IStashService stash
@@ -13,7 +13,7 @@
 </div>
 <CustomGrid Id="Demo_Id" Query=query @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
     <Column Property="u => u.Id" />
-    <Column Property="u => u.Name" Href=@(u => "/users/" + u.Id) />
+    <Column Property="u => u.Name" Href=@(u => "/wasm/users/" + u.Id) />
     <Column Property="u => u.Username" />
     <Column Property="u => u.ContactInformation.Email" Title="E-mail" Context="item">
         <a href="mailto:@item.ContactInformation.Email">@item.ContactInformation.Email</a>

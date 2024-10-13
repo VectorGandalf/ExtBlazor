@@ -1,0 +1,11 @@
+﻿@page "/wasm"
+@using ExtBlazor.Demo.Client.Services
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@inject IStashService stash
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        stash.Clear();
+        return base.OnInitializedAsync();
+    }
+}
