@@ -44,7 +44,7 @@
                         <td class="column.FootCssClass">
                             @if (column.FootTemplate != null)
                             {
-                                @column.FootTemplate
+                                @column.FootTemplate(column)
                             }
                         </td>
                     }
