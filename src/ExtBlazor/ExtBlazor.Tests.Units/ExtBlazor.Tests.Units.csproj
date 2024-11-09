@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ExtBlazor.Core\ExtBlazor.Core.csproj" />
     <ProjectReference Include="..\ExtBlazor.Events\ExtBlazor.Events.csproj" />
+    <ProjectReference Include="..\ExtBlazor.Stash\ExtBlazor.Stash.csproj" />
   </ItemGroup>
 
   <ItemGroup>

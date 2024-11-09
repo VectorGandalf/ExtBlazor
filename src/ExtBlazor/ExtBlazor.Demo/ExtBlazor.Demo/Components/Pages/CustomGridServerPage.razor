@@ -22,7 +22,7 @@
     <Column Property="u => u.ContactInformation.Email" Title="E-mail" Context="item">
         <a href="mailto:@item.ContactInformation.Email">@item.ContactInformation.Email</a>
     </Column>
-    <Column Property="u => u.ContactInformation.Phone" Format=Formaters.FormatPhoneNumber />
+    <Column Property="u => u.ContactInformation.Phone" Title="Phone" Format=Formaters.FormatPhoneNumber />
     <Column Property="u => u.Created" Format=Formaters.FormatDate />
     <Column Property="u => u.LastLogin" Title="Last login" Format=Formaters.FormatDateTime />
     <TemplateColumn Title="E-mail length" Context="item">

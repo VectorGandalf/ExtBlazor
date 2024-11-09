@@ -1,7 +1,7 @@
 using ExtBlazor.Events;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Simple.Messaging.Tests;
+namespace ExtBlazor.Tests.Units.Events;
 
 public class InProcessEventServiceTests
 {

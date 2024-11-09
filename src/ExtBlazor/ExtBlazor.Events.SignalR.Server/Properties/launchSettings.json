@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ExtBlazor.Events.SignalR.Server": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:63092;http://localhost:63093"
+    }
+  }
+}

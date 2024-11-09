@@ -3,17 +3,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ExtBlazor.Stash;
 
-public class StashService(IServiceProvider serviceProvider) : IStashService
+public class StashService(ICurrentUriProvider currentUriProvider) : IStashService
 {
     private Dictionary<string, Dictionary<string, object>> store = new();
-    private string? CurrentUri => serviceProvider.GetService<NavigationManager>()?.Uri;
+    private string? CurrentUri => currentUriProvider.Uri;
     public void Put(string key, object value)
     {
         if (CurrentUri == null)
         {
             return;
         }
-        if (!store.ContainsKey(CurrentUri))
+        else if (!store.ContainsKey(CurrentUri))
         {
             store.Add(CurrentUri, new() { { key, value } });
         }

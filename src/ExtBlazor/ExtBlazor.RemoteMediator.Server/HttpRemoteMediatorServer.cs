@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
 
 namespace ExtBlazor.RemoteMediator.Server;
 public class HttpRemoteMediatorServer
