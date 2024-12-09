@@ -1,13 +1,12 @@
 ﻿using ExtBlazor.Demo.Client.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ExtBlazor.Demo.Database;
 
-public class ExDbContext : DbContext
+public class ExDbContext(DbContextOptions options) : DbContext(options)
 {
-    public ExDbContext(DbContextOptions options) : base(options) { }
-
-    public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

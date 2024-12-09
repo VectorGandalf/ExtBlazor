@@ -29,10 +29,7 @@ builder.Services.AddMediatR(c =>
 
 builder.Services.AddRemoteMediatorServer(config =>
 {
-    config.MediatorCallback = async (IBaseRequest request, IMediator mediator) =>
-    {
-        return await mediator.Send(request);
-    };
+    config.MediatorCallback = async (IBaseRequest request, IMediator mediator) => await mediator.Send(request);
 });
 
 builder.Services.AddStashService();

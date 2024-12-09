@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace ExtBlazor.Stash;
+﻿namespace ExtBlazor.Stash;
 
 public class StashService(ICurrentUriProvider currentUriProvider) : IStashService
 {
@@ -53,15 +50,5 @@ public class StashService(ICurrentUriProvider currentUriProvider) : IStashServic
     public void Clear()
     {
         store = new();
-    }
-
-    private string? ToAbsoluteUri(string path)
-    {
-        if (CurrentUri == null)
-        {
-            return null;
-        }
-        var host = new Uri(CurrentUri).GetLeftPart(UriPartial.Authority);
-        return host + path;
     }
 }

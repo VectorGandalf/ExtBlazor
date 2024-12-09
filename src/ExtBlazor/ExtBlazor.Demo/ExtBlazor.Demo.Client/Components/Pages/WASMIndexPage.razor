@@ -1,6 +1,6 @@
 ﻿@page "/wasm"
 @using ExtBlazor.Stash
-@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: false))
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: true))
 @inject IStashService stash
 @code {
     protected override Task OnInitializedAsync()
