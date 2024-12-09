@@ -1,0 +1,88 @@
+﻿@page "/wasm/grid"
+@using ExtBlazor.Core
+@using ExtBlazor.Stash
+@using ExtBlazor.Paginators
+@using ExtBlazor.RemoteMediator
+@inject IRemoteMediator mediator
+@inject IStashService stash
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: true))
+<h2>Grid demo WASM</h2>
+<p>
+    Simple grid demo.
+</p>
+<div class="input-group w-50">
+    <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
+    <button class="btn btn-primary" @onclick=Search>Search</button>
+</div>
+<Grid Items="items"
+      OnColumnEvent="args => HandleColumnEvent(args)"
+      CssClass="table table-striped w-100"
+      RowCssClass=@(i => i.Admin ? "admin" : null)
+      Sort="query.Sort ?? []">
+    <Column Property="u => u.Id" />
+    <Column Property="u => u.Name" Href=@(u => "/wasm/users/" + u.Id) />
+    <Column Property="u => u.Username" />
+    <Column Property="u => u.Email" Title="E-Mail" Href=@(u => "mailto:" + u.Email) />
+    <Column Property="u => u.Phone" Format=Formaters.FormatPhoneNumber />
+    <Column Property="u => u.Created" Format=Formaters.FormatDate />
+    <Column Property="u => u.LastLogin" Title="Last login" Format=Formaters.FormatDateTime Sortable="false" />
+</Grid>
+<SimplePagination Pagination="pagination" Padding="5" NavCssClass="pagination" ActiveCssClass="active" ButtonCssClass="page-item page-link" SelectCssClass="form-select w-auto me-5" />
+@code
+{
+    private IEnumerable<User> items = [];
+    private Pagination pagination = new();
+    private GetUsersQuery query = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var memoryQuery = stash.Get<GetUsersQuery>("query");
+        if (memoryQuery != null)
+        {
+            query = memoryQuery;
+        }
+
+        pagination.Take = query.Take ?? 10;
+        pagination.Skip = query.Skip ?? 0;
+        pagination.OnNavigation = async () => await UpdateItems();
+        await UpdateItems();
+
+        await base.OnInitializedAsync();
+    }
+
+    private void Search()
+    {
+        pagination.SetPage(1);
+    }
+
+    private void HandleColumnEvent(IColumnEventArgs args)
+    {
+        if (args is ColumnSortEventArgs sortArgs)
+        {
+            query.Sort = sortArgs.SortExpressions;
+            pagination.SetPage(1);
+        }
+    }
+
+    private void Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            Search();
+        }
+    }
+
+    private async Task UpdateItems()
+    {
+        query.Skip = pagination.Skip;
+        query.Take = pagination.Take;
+        stash.Put("query", query);
+        var page = await mediator.Send(query);
+        if (page != null)
+        {
+            pagination.TotalCount = page.Total;
+            items = page.Items;
+            StateHasChanged();
+        }
+    }
+}

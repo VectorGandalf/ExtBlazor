@@ -396,3 +396,8 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Example sqlite db
+ex.db
+ex.db-shm
+ex.db-wal

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -9,7 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
+    <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ExtBlazor.Core\ExtBlazor.Core.csproj" />
+    <ProjectReference Include="..\..\ExtBlazor.Grid\ExtBlazor.Grid.csproj" />
+    <ProjectReference Include="..\..\ExtBlazor.Pagination\ExtBlazor.Paginators.csproj" />
+    <ProjectReference Include="..\..\ExtBlazor.RemoteMediator.Client\ExtBlazor.RemoteMediator.Client.csproj" />
+    <ProjectReference Include="..\..\ExtBlazor.Stash\ExtBlazor.Stash.csproj" />
   </ItemGroup>
 
 </Project>

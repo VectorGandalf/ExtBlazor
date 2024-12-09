@@ -1,0 +1,17 @@
+@typeparam TItem
+@typeparam TProperty
+@if (Column.Href == null)
+{
+    @Column.GetValue(Item)
+}
+else
+{
+    <a href="@Column.Href(Item)" title="@Column.Title">@Column.GetValue(Item)</a>
+}
+@code{
+    [Parameter, EditorRequired]
+    public required Column<TItem, TProperty> Column { get; set; }
+
+    [Parameter]
+    public TItem? Item { get; set; }
+}

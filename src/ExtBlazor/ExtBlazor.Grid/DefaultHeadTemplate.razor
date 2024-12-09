@@ -1,0 +1,16 @@
+@inherits SortableHeadTemplateBase
+@if (Column.Sortable)
+{
+    <button @onclick=OnClick class="@SortClass">@Column.Title</button>
+}
+else
+{
+    <text>@Column.Title</text>
+}
+@code {
+    private string? SortClass => Column.ColumnEventReciver?.Sort.Any(sortExpression => sortExpression.Property == Column.PropertyName) ?? false
+        ? Ascending
+            ? "ascending"
+            : "descending"
+        : null;
+}

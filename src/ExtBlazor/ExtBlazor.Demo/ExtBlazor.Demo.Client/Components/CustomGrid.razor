@@ -1,0 +1,117 @@
+﻿@using ExtBlazor.Core
+@using ExtBlazor.Paginators
+@using ExtBlazor.RemoteMediator
+@using ExtBlazor.Stash
+@inject IRemoteMediator mediator
+@inject IStashService stash
+@attribute [CascadingTypeParameter(nameof(TItem))]
+@typeparam TItem
+
+<div class="d-flex justify-content-between">
+    <span>
+        Page: @(pagination.CurrentPage)/@(pagination.Pages)
+    </span>
+    <span>
+        Page size:
+        <select @bind=pagination.Take class="form-select w-auto">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </span>
+</div>
+<Grid Items="items" OnColumnEvent=OnColumnEvent CssClass="table table-striped w-100" DefaultHeadTempate="typeof(CustomHeadTemplate)" RowCssClass=RowCssClass Sort="@Query.Sort">
+    @ChildContent
+</Grid>
+
+<nav>
+    <div class="d-flex justify-content-center">
+        <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.First">&#171;</button>
+        <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.Previous">&#8249;</button>
+        <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.Next">&#8250;</button>
+        <button role="navigation" type="button" class="btn btn-link" @onclick="pagination.Last">&#187;</button>
+    </div>
+</nav>
+@code {
+    [Parameter]
+    public string? Id { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter, EditorRequired]
+    public required IPageQuery<TItem> Query { get; set; }
+
+    [Parameter]
+    public Func<TItem, string?> RowCssClass { get; set; } = item => null;
+
+    private Grid<TItem>? grid;
+
+    private IEnumerable<TItem> items = [];
+
+    private bool loading;
+
+    private Pagination pagination = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        pagination.Take = Query.Take ?? 10;
+        pagination.Skip = Query.Skip ?? 0;
+        pagination.OnNavigation = async () => await UpdateItems();
+
+        await UpdateItems();
+
+        await base.OnInitializedAsync();
+    }
+
+    private void OnColumnEvent(IColumnEventArgs args)
+    {
+        if (args is ColumnSortEventArgs sortArgs)
+        {
+            Query.Sort = sortArgs.SortExpressions;
+            pagination.SetPage(1);
+        }
+    }
+
+    private async Task UpdateItems()
+    {
+        try
+        {
+            loading = true;
+            StateHasChanged();
+
+            Query.Skip = pagination.Skip;
+            Query.Take = pagination.Take;
+
+            if (Id != null)
+            {
+                stash.Put(Id, Query);
+            }
+
+            var pagedSet = await mediator.Send(Query);
+            if (pagedSet != null)
+            {
+                pagination.TotalCount = pagedSet.Total;
+                items = pagedSet.Items;
+            }
+            else
+            {
+                pagination.TotalCount = 0;
+                items = [];
+            }
+        }
+        finally
+        {
+            loading = false;
+            StateHasChanged();
+        }
+    }
+
+    public async Task Update()
+    {
+        pagination.SetPage(1);
+        await UpdateItems();
+    }
+}

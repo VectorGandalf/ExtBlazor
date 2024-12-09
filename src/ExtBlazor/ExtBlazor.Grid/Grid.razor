@@ -1,0 +1,55 @@
+﻿@using System.Linq.Expressions
+@typeparam TItem
+<CascadingValue Value="this" Name="ParentGrid">
+    @ChildContent
+    <table class=@CssClass>
+        @if (Columns.Any(_ => _.HeadTemplate != null))
+        {
+            <thead>
+                <tr>
+                    @foreach (var column in Columns)
+                    {
+                        @if (column.HeadTemplate != null)
+                        {
+                            <th class="@column.HeadCssClass">
+                                @column.HeadTemplate(column)
+                            </th>
+                        }
+                    }
+                </tr>
+            </thead>
+        }
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr class="@RowCssClass(item)">
+                    @foreach (var column in Columns)
+                    {
+                        <td class="@column.ItemCssClass">
+                            @if (column.ChildContent != null)
+                            {
+                                @column.ChildContent(item)
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+        @if (Columns.Any(_ => _.FootTemplate != null))
+        {
+            <tfoot>
+                <tr>
+                    @foreach (var column in Columns)
+                    {
+                        <td class="column.FootCssClass">
+                            @if (column.FootTemplate != null)
+                            {
+                                @column.FootTemplate(column)
+                            }
+                        </td>
+                    }
+                </tr>
+            </tfoot>
+        }
+    </table>
+</CascadingValue>

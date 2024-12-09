@@ -1,0 +1,19 @@
+﻿@page "/wasm/users/{Id:int}"
+@using ExtBlazor.RemoteMediator
+@inject IRemoteMediator mediator
+@rendermode @(new InteractiveWebAssemblyRenderMode(prerender: true))
+
+<h3>@user?.Name WASM</h3>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private UserDto? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        user = await mediator.Send(new GetUserQuery { Id = Id });
+    }
+}

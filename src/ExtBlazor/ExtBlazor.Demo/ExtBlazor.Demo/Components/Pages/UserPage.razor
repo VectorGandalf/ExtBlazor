@@ -1,0 +1,20 @@
+﻿@page "/server/users/{Id:int}"
+@using ExtBlazor.Demo.Client.Models
+@using ExtBlazor.RemoteMediator
+@inject IRemoteMediator mediator
+@rendermode InteractiveServer
+
+<h3>@user?.Name Server</h3>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private UserDto? user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        user = await mediator.Send(new GetUserQuery { Id = Id });
+    }
+}

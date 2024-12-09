@@ -1,9 +1,25 @@
-﻿@inherits LayoutComponentBase
+﻿@using ExtBlazor.Demo.Client.Components
 
-@Body
+@inherits LayoutComponentBase
+@inject NavigationManager nav
+<MainNav />
+@if (nav.ToBaseRelativePath(nav.Uri).StartsWith("wasm", StringComparison.InvariantCultureIgnoreCase))
+{
+    <SubNavWASM />
+}
+else if (nav.ToBaseRelativePath(nav.Uri).StartsWith("server", StringComparison.InvariantCultureIgnoreCase))
+{
+    <SubNavServer />
+}
+<div class="m-3">
+    @Body
+</div>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@code{
+}

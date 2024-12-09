@@ -1,0 +1,62 @@
+﻿@page "/server/customgrid"
+@using ExtBlazor.Core
+@using ExtBlazor.Demo.Client.Components
+@using ExtBlazor.Demo.Client.Models
+@using ExtBlazor.Grid
+@using ExtBlazor.Stash
+@inject IStashService stash
+@rendermode InteractiveServer
+
+<h2>Customized Grid demo Server Side Blazor</h2>
+<p>
+    The recomended way to use Grid component is to <strong>wrap</strong> it with the project specific property values for easy use.
+</p>
+<div class="input-group w-50">
+    <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
+    <button class="btn btn-primary" @onclick=Search>Search</button>
+</div>
+<CustomGrid Id="Demo_Id" Query=query @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
+    <Column Property="u => u.Id" />
+    <Column Property="u => u.Name" Href=@(u => "/server/users/" + u.Id) />
+    <Column Property="u => u.Username" />
+    <Column Property="u => u.ContactInformation.Email" Title="E-mail" Context="item">
+        <a href="mailto:@item.ContactInformation.Email">@item.ContactInformation.Email</a>
+    </Column>
+    <Column Property="u => u.ContactInformation.Phone" Title="Phone" Format=Formaters.FormatPhoneNumber />
+    <Column Property="u => u.Created" Format=Formaters.FormatDate />
+    <Column Property="u => u.LastLogin" Title="Last login" Format=Formaters.FormatDateTime />
+    <TemplateColumn Title="E-mail length" Context="item">
+        @item.ContactInformation.Email.Length
+    </TemplateColumn>
+    <Column Property="u => u.Admin" />
+</CustomGrid>
+@code {
+    private GetUserDtosQuery query = new();
+    private CustomGrid<UserDto>? grid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var stashedQuery = stash.Get<GetUserDtosQuery>("Demo_Id");
+        if (stashedQuery != null)
+        {
+            query = stashedQuery;
+        }
+        await base.OnInitializedAsync();
+    }
+
+    private async Task Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await Search();
+        }
+    }
+
+    private async Task Search()
+    {
+        if (grid != null)
+        {
+            await grid.Update();
+        }
+    }
+}

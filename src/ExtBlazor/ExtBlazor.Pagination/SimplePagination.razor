@@ -1,0 +1,23 @@
+<nav aria-label="Page navigation" class="@NavCssClass">
+    <select @bind=@Pagination.Take class="@SelectCssClass">
+        @foreach (var size in PageSizes)
+        {
+            <option value="@size">@size</option>
+        }        
+    </select>
+    <button role="navigation" type="button" class="@ButtonCssClass" @onclick="Pagination.First">&#171;</button>
+    <button role="navigation" type="button" class="@ButtonCssClass" @onclick="Pagination.Previous">&#8249;</button>
+    @foreach (var page in Pagination.GetWindow(Padding))
+    {
+        if (page != Pagination.CurrentPage)
+        {
+            <button role="navigation" type="button" class="@ButtonCssClass" id="page-@(page)" @onclick="() => Pagination.SetPage(page)">@(page)</button>
+        }
+        else
+        {
+            <button role="navigation" type="button" class="@ButtonCssClass @ActiveCssClass">@(page)</button>
+        }
+    }
+    <button role="navigation" type="button" class="@ButtonCssClass" @onclick="Pagination.Next">&#8250;</button>
+    <button role="navigation" type="button" class="@ButtonCssClass" @onclick="Pagination.Last">&#187;</button>
+</nav>
