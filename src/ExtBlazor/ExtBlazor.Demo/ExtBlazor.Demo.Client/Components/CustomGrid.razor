@@ -6,6 +6,7 @@
 @inject IStashService stash
 @attribute [CascadingTypeParameter(nameof(TItem))]
 @typeparam TItem
+@typeparam TQuery where TQuery : IPageQuery<TItem>
 
 <div class="d-flex justify-content-between">
     <span>
@@ -42,7 +43,10 @@
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter, EditorRequired]
-    public required IPageQuery<TItem> Query { get; set; }
+    public required TQuery Query { get; set; }
+
+    [Parameter]
+    public required EventCallback<TQuery> QueryChanged { get; set; }
 
     [Parameter]
     public Func<TItem, string?> RowCssClass { get; set; } = item => null;
@@ -57,6 +61,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        var stashedQuery = stash.Get<TQuery>(Id ?? "QueryId");
+        if (stashedQuery != null)
+        {
+            await QueryChanged.InvokeAsync(stashedQuery);
+            Query = stashedQuery;
+        }
+
         pagination.Take = Query.Take ?? 10;
         pagination.Skip = Query.Skip ?? 0;
         pagination.OnNavigation = async () => await UpdateItems();
@@ -88,6 +99,7 @@
             if (Id != null)
             {
                 stash.Put(Id, Query);
+                await QueryChanged.InvokeAsync(Query);
             }
 
             var pagedSet = await mediator.Send(Query);
