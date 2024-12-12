@@ -49,12 +49,6 @@ public static class IQueryableExtensions
         ? isFirst ? "OrderBy" : "ThenBy"
         : isFirst ? "OrderByDescending" : "ThenByDescending";
 
-    private static (string, bool)[] Parse(string? sortPropertiesExpression) => (sortPropertiesExpression ?? "")
-        .Split(',')
-        .Select(s => s.Split(' '))
-        .Select(s => (s[0], s.Length < 2 || s[1] == "asc"))
-        .ToArray();
-
     private static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> queryable,
         string method,
         string property)

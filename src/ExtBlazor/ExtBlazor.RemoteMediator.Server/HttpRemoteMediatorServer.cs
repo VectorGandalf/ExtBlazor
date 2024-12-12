@@ -35,7 +35,7 @@ public class HttpRemoteMediatorServer
         {
             return new(new(result), null);
         }
-        else 
+        else
         {
             return new(null, null);
         }

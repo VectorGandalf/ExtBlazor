@@ -50,7 +50,7 @@ public class StashServiceTests
     {
         //Arrange
         var currentUriProvider = new TestCurrentUriProvider();
-        
+
         IStashService stash = new StashService(currentUriProvider);
         var key1 = "Object 1";
         var putObject1 = new { Prop1 = 1, Prop2 = "test" };
@@ -61,7 +61,7 @@ public class StashServiceTests
         //Act
         currentUriProvider.Uri = "testuri1";
         stash.Put(key1, putObject1);
-        
+
         currentUriProvider.Uri = "testuri2";
         stash.Put(key2, putObject2);
         var getObject2 = stash.Get<object>(key2);

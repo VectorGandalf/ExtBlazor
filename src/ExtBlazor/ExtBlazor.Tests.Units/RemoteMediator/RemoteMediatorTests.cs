@@ -8,14 +8,14 @@ namespace ExtBlazor.Tests.Units.RemoteMediator;
 public class RemoteMediatorTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {
     [Fact]
-    public async Task Send() 
+    public async Task Send()
     {
         // Arrange
         var httpClient = factory.CreateClient();
         var httpClientFactory = new FakeHttpClientFactory(httpClient);
-        var remoteMediator = new HttpRemoteMediator(httpClientFactory, new());        
+        var remoteMediator = new HttpRemoteMediator(httpClientFactory, new());
         await remoteMediator.Send(new CreateObjectCommand(1, "Test object"));
-        
+
         // Act
         var objects = await remoteMediator.Send(new GetObjectsQuery());
 
