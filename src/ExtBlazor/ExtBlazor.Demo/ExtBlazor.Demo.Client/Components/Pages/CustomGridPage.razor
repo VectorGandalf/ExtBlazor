@@ -11,7 +11,7 @@
     <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
     <button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
-<CustomGrid Id="Demo_Id" Query=query @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
+<CustomGrid TItem="UserDto" TQuery="GetUserDtosQuery" Id="Demo_Id" @bind-Query=query @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
     <Column Property="u => u.Id" />
     <Column Property="u => u.Name" Href=@(u => "/wasm/users/" + u.Id) />
     <Column Property="u => u.Username" />
@@ -29,17 +29,7 @@
 @code {
     private GetUserDtosQuery query = new();
 
-    private CustomGrid<UserDto>? grid;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var stashedQuery = stash.Get<GetUserDtosQuery>("Demo_Id");
-        if (stashedQuery != null)
-        {
-            query = stashedQuery;
-        }
-        await base.OnInitializedAsync();
-    }
+    private CustomGrid<UserDto, GetUserDtosQuery>? grid;
 
     private async Task Enter(KeyboardEventArgs e)
     {
