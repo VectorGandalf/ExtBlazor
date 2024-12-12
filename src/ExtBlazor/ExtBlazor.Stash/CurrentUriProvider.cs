@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ExtBlazor.Stash;
 
-public interface ICurrentUriProvider 
+public interface ICurrentUriProvider
 {
     string? Uri { get; }
 }

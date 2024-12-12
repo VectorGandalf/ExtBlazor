@@ -1,7 +1,7 @@
 ﻿namespace ExtBlazor.RemoteMediator.Server;
 
 public class LocalRemoteMediator(
-    HttpRemoteMediatorServerConfig config, 
+    HttpRemoteMediatorServerConfig config,
     IServiceProvider serviceProvider) : IRemoteMediator
 {
     public async Task<TResult?> Send<TResult>(IRemoteRequest<TResult> request, CancellationToken ct = default)
@@ -10,7 +10,7 @@ public class LocalRemoteMediator(
         var processedRequest = config.RequestProcessor(request);
         var result = (TResult?)await MediatorInvoker.Invoke(
             processedRequest,
-            config.MediatorCallback, 
+            config.MediatorCallback,
             serviceProvider,
             ct);
         if (result != null)
@@ -26,8 +26,8 @@ public class LocalRemoteMediator(
         _ = config.MediatorCallback ?? throw new NoMediatorCallbackException();
         var processedRequest = config.RequestProcessor(request);
         await MediatorInvoker.Invoke(
-            processedRequest, 
-            config.MediatorCallback, 
+            processedRequest,
+            config.MediatorCallback,
             serviceProvider,
             ct);
     }

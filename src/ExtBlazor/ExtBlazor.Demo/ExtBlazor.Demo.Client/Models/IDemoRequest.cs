@@ -3,10 +3,10 @@ using MediatR;
 
 namespace ExtBlazor.Demo.Client.Models;
 
-public interface IDemoRequest<TResult> : 
-    IRemoteRequest<TResult>, 
+public interface IDemoRequest<TResult> :
+    IRemoteRequest<TResult>,
     IRequest<TResult>;
 
-public interface IDemoRequest : 
-    IRemoteRequest, 
+public interface IDemoRequest :
+    IRemoteRequest,
     IRequest;

@@ -10,12 +10,12 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
-    public static void UseEventService(this IHost host) 
+    public static void UseEventService(this IHost host)
     {
-        var eventService = host.Services.GetService<IEventService>() 
+        var eventService = host.Services.GetService<IEventService>()
             ?? throw new NullReferenceException("No Event Service (IEventService) added!");
 
-        eventService.Register<IEvent>((IEvent @event, IHubContext hub) => 
+        eventService.Register<IEvent>((IEvent @event, IHubContext hub) =>
         {
             hub.Clients.All.SendAsync("send_event", new JsonParcel(@event));
         });
