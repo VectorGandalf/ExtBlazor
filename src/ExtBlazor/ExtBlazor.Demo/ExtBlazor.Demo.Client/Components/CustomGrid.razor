@@ -51,11 +51,7 @@
     [Parameter]
     public Func<TItem, string?> RowCssClass { get; set; } = item => null;
 
-    private Grid<TItem>? grid;
-
     private IEnumerable<TItem> items = [];
-
-    private bool loading;
 
     private Pagination pagination = new();
 
@@ -90,7 +86,6 @@
     {
         try
         {
-            loading = true;
             StateHasChanged();
 
             Query.Skip = pagination.Skip;
@@ -116,7 +111,6 @@
         }
         finally
         {
-            loading = false;
             StateHasChanged();
         }
     }
