@@ -398,7 +398,7 @@ FodyWeavers.xsd
 *.sln.iml
 
 # wwwroot/lib
-#**/wwwroot/lib
+**/wwwroot/lib
 
 # Example sqlite db
 ex.db
