@@ -1,12 +1,17 @@
+using System.Runtime.CompilerServices;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
 using ExtBlazor.Demo.Services;
+using ExtBlazor.Events.SignalR.Server;
 using ExtBlazor.RemoteMediator.Server;
 using ExtBlazor.Stash;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHostedService<TickerHostedService>();
+builder.Services.AddSignalREventService();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -54,7 +59,7 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseSignalREventService();
 app.MapRemoteMediatorEndPoint();
 
 app.MapRazorComponents<App>()

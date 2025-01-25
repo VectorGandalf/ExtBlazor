@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ExtBlazor.Core.Server\ExtBlazor.Core.Server.csproj" />
+    <ProjectReference Include="..\..\ExtBlazor.Events.SignalR.Server\ExtBlazor.Events.SignalR.Server.csproj" />
     <ProjectReference Include="..\..\ExtBlazor.RemoteMediator.Server\ExtBlazor.RemoteMediator.Server.csproj" />
     <ProjectReference Include="..\ExtBlazor.Demo.Client\ExtBlazor.Demo.Client.csproj" />
     <PackageReference Include="MediatR" Version="12.4.1" />
