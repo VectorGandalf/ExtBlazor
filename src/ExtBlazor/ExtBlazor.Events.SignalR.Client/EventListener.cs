@@ -23,9 +23,11 @@ public class EventListener() :
     {
         if (OperatingSystem.IsBrowser())
         {
+            
             var uri = Navigation.ToAbsoluteUri(Configuration.SignalRHubPath);
             hubConnection = new HubConnectionBuilder()
                 .WithUrl(uri)
+                .WithAutomaticReconnect()
                 .Build();
 
             hubConnection.On<string>("send_event", HandleEvent);

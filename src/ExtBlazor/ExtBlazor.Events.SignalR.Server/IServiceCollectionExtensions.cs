@@ -24,7 +24,8 @@ public static class IServiceCollectionExtensions
 
         var eventService = host.Services.GetService<IEventService>()
             ?? throw new NullReferenceException("No Event Service (IEventService) added!");
-
+        
+        //TODO: Add configurable event router!
         eventService.Register<IEvent>((IEvent @event, IHubContext<EventHub> hub) =>
             hub.Clients.All.SendAsync(
                 "send_event",

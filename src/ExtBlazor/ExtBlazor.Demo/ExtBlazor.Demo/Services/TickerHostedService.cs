@@ -18,7 +18,7 @@ namespace ExtBlazor.Demo.Services
 
         private void DoWork(object? state)
         {
-            tick = Interlocked.Increment(ref tick);
+            Interlocked.Increment(ref tick);
             eventService.Handle(new TickEvent(tick));            
         }
 
