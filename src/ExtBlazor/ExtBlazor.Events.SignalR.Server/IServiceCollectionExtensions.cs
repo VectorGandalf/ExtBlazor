@@ -1,7 +1,5 @@
 ﻿using System.Text.Json;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 
 namespace ExtBlazor.Events.SignalR.Server;
 public static class IServiceCollectionExtensions
@@ -14,21 +12,22 @@ public static class IServiceCollectionExtensions
         return services;
     }
 
-    public static void UseSignalREventService(this IHost host)
+    public static HubEndpointConventionBuilder UseSignalREventService(this IHost host)
     {
-        if (host is IEndpointRouteBuilder endpointRouteBuilder)
-        {
-            var uri = host.Services.GetService<EventListenerConfiguration>()!.SignalRHubPath;
-            endpointRouteBuilder.MapHub<EventHub>(uri);
-        }
+        var endpointRouteBuilder = (IEndpointRouteBuilder)host;
+
+        var uri = host.Services.GetService<EventListenerConfiguration>()!.SignalRHubPath;
+        var hubEndpointConventionBuilder = endpointRouteBuilder.MapHub<EventHub>(uri);
 
         var eventService = host.Services.GetService<IEventService>()
             ?? throw new NullReferenceException("No Event Service (IEventService) added!");
-        
+
         //TODO: Add configurable event router!
         eventService.Register<IEvent>((IEvent @event, IHubContext<EventHub> hub) =>
             hub.Clients.All.SendAsync(
                 "send_event",
                 JsonSerializer.Serialize(new JsonParcel(@event))));
+
+        return hubEndpointConventionBuilder;
     }
 }
