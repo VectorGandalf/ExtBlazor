@@ -1,49 +1,74 @@
 ﻿@page "/wasm/customgrid"
+@implements IDisposable
 @using ExtBlazor.Core
 @using ExtBlazor.Stash
+@using ExtBlazor.Events
+@inject IEventService events
 @inject IStashService stash
 @rendermode @(new InteractiveWebAssemblyRenderMode(prerender: true))
-<h2>Customized Grid demo WASM</h2>
+
+<h2>Customized Grid demo WASM @(System.OperatingSystem.IsBrowser())</h2>
 <p>
-    The recomended way to use Grid component is to <strong>wrap</strong> it with the project specific property values for easy use.
+	The recomended way to use Grid component is to <strong>wrap</strong> it with the project specific property values for easy use.
+</p>
+<p>
+	Tick number: <span>@(tick == 0 ? "" : tick)</span> (Comming from server via SignalR and eventbus)
 </p>
 <div class="input-group w-50">
-    <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
-    <button class="btn btn-primary" @onclick=Search>Search</button>
+	<input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
+	<button class="btn btn-primary" @onclick=Search>Search</button>
 </div>
 <CustomGrid TItem="UserDto" TQuery="GetUserDtosQuery" Id="Demo_Id" @bind-Query=query @ref=grid RowCssClass=@(i => i.Admin ? "admin" : null)>
-    <Column Property="u => u.Id" />
-    <Column Property="u => u.Name" Href=@(u => "/wasm/users/" + u.Id) />
-    <Column Property="u => u.Username" />
-    <Column Property="u => u.ContactInformation.Email" Title="E-mail" Context="item">
-        <a href="mailto:@item.ContactInformation.Email">@item.ContactInformation.Email</a>
-    </Column>
-    <Column Property="u => u.ContactInformation.Phone" Format=Formaters.FormatPhoneNumber />
-    <Column Property="u => u.Created" Format=Formaters.FormatDate />
-    <Column Property="u => u.LastLogin" Title="Last login" Format=Formaters.FormatDateTime />
-    <TemplateColumn Title="E-mail length" Context="item">
-        @item.ContactInformation.Email.Length
-    </TemplateColumn>
-    <Column Property="u => u.Admin" />
+	<Column Property="u => u.Id" />
+	<Column Property="u => u.Name" Href=@(u => "/wasm/users/" + u.Id) />
+	<Column Property="u => u.Username" />
+	<Column Property="u => u.ContactInformation.Email" Title="E-mail" Context="item">
+		<a href="mailto:@item.ContactInformation.Email">@item.ContactInformation.Email</a>
+	</Column>
+	<Column Property="u => u.ContactInformation.Phone" Format=Formaters.FormatPhoneNumber />
+	<Column Property="u => u.Created" Format=Formaters.FormatDate />
+	<Column Property="u => u.LastLogin" Title="Last login" Format=Formaters.FormatDateTime />
+	<TemplateColumn Title="E-mail length" Context="item">
+		@item.ContactInformation.Email.Length
+	</TemplateColumn>
+	<Column Property="u => u.Admin" />
 </CustomGrid>
 @code {
-    private GetUserDtosQuery query = new();
+	private GetUserDtosQuery query = new();
 
-    private CustomGrid<UserDto, GetUserDtosQuery>? grid;
+	private CustomGrid<UserDto, GetUserDtosQuery>? grid;
+	private int tick;
+	private Guid eventHandlerId; 
 
-    private async Task Enter(KeyboardEventArgs e)
-    {
-        if (e.Code == "Enter" || e.Code == "NumpadEnter")
-        {
-            await Search();
-        }
-    }
+	protected override Task OnInitializedAsync()
+	{
+		events.Register<TickEvent>(UpdateTick);
+		return base.OnInitializedAsync();
+	}
 
-    private async Task Search()
-    {
-        if (grid != null)
-        {
-            await grid.Update();
-        }
-    }
+	private void UpdateTick(TickEvent e)
+	{
+		tick = e.Tick;
+		InvokeAsync(StateHasChanged);
+	}
+
+	private async Task Enter(KeyboardEventArgs e)
+	{
+		if (e.Code == "Enter" || e.Code == "NumpadEnter")
+		{
+			await Search();
+		}
+	}
+
+	private async Task Search()
+	{
+		if (grid != null)
+		{
+			await grid.Update();
+		}
+	}
+	public void Dispose() 
+	{
+		events.Unregister(eventHandlerId);
+	}
 }

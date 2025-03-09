@@ -1,7 +1,10 @@
 ﻿@using ExtBlazor.Demo.Client.Components
+@using ExtBlazor.Events.SignalR.Client
 
 @inherits LayoutComponentBase
 @inject NavigationManager nav
+
+<EventListener @rendermode="InteractiveWebAssembly" />
 <MainNav />
 @if (nav.ToBaseRelativePath(nav.Uri).StartsWith("wasm", StringComparison.InvariantCultureIgnoreCase))
 {
