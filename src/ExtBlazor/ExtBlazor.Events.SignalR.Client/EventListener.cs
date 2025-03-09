@@ -17,17 +17,17 @@ public class EventListener() :
     [Inject]
     public required EventListenerConfiguration Configuration { get; set; }
 
+    [Inject]
+    public required EventsHubConnectionBuilder HubConnectionBuilder { get; set; }
+
     private HubConnection? hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
         if (OperatingSystem.IsBrowser())
-        {
-            
+        {            
             var uri = Navigation.ToAbsoluteUri(Configuration.SignalRHubPath);
-            hubConnection = new HubConnectionBuilder()
-                .WithUrl(uri)
-                .WithAutomaticReconnect()
+            hubConnection = HubConnectionBuilder.Builder(uri)
                 .Build();
 
             hubConnection.On<string>("send_event", HandleEvent);

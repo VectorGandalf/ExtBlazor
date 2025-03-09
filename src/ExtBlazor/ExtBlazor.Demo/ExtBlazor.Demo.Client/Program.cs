@@ -4,7 +4,7 @@ using ExtBlazor.Stash;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.Services.AddEventServiceClient();
+builder.Services.AddSignalREventServiceClient();
 builder.Services.AddHttpClient("Default", httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);

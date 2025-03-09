@@ -1,17 +1,21 @@
-using System.Runtime.CompilerServices;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
 using ExtBlazor.Demo.Services;
+using ExtBlazor.Events.SignalR.Client;
 using ExtBlazor.Events.SignalR.Server;
 using ExtBlazor.RemoteMediator.Server;
 using ExtBlazor.Stash;
 using MediatR;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var hubBuilderConfiguration = new EventsHubConnectionBuilder();
+
 builder.Services.AddHostedService<TickerHostedService>();
 builder.Services.AddSignalREventService();
+builder.Services.AddSignalREventServiceClient();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
