@@ -6,6 +6,24 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>Extendable Blazor Core</Title>
+    <Description>Extendable Blazor Core Library for common types.</Description>
+    <Copyright>Daniel Johansson</Copyright>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/VectorGandalf/ExtBlazor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Blazor</PackageTags>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+	<VersionPrefix>$(AssemblyVersion)</VersionPrefix>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
