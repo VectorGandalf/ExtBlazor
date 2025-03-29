@@ -30,7 +30,12 @@
     <Column Property="u => u.Created" Format=Formaters.FormatDate />
     <Column Property="u => u.LastLogin" Title="Last login" Format=Formaters.FormatDateTime Sortable="false" />
 </Grid>
-<SimplePagination Pagination="pagination" Padding="5" NavCssClass="pagination" ActiveCssClass="active" ButtonCssClass="page-item page-link" SelectCssClass="form-select w-auto me-5" />
+<SimplePagination Pagination="pagination"
+    Padding="5" 
+    NavCssClass="pagination" 
+    ActiveCssClass="active" 
+    ButtonCssClass="page-item page-link"
+    SelectCssClass="form-select w-auto me-5" />
 @code
 {
     private IEnumerable<User> items = [];

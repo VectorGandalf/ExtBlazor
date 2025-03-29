@@ -10,7 +10,7 @@
 		<RepositoryUrl>https://github.com/VectorGandalf/ExtBlazor</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>Blazor</PackageTags>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<AssemblyVersion>1.0.1</AssemblyVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<FileVersion>$(AssemblyVersion)</FileVersion>
@@ -25,6 +25,7 @@
 	<ItemGroup>
 		<PackageReference Include="ExtBlazor.Core" Version="1.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.11" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.11" />
 	</ItemGroup>
 	
 	<ItemGroup>

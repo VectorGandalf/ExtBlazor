@@ -1,15 +1,21 @@
 ﻿@page "/server/customgrid"
+@implements IDisposable
 @using ExtBlazor.Core
 @using ExtBlazor.Demo.Client.Components
 @using ExtBlazor.Demo.Client.Models
 @using ExtBlazor.Grid
 @using ExtBlazor.Stash
+@using ExtBlazor.Events
+@inject IEventService events
 @inject IStashService stash
 @rendermode InteractiveServer
 
 <h2>Customized Grid demo Server Side Blazor</h2>
 <p>
     The recomended way to use Grid component is to <strong>wrap</strong> it with the project specific property values for easy use.
+</p>
+<p>
+    Tick number: <span>@(tick == 0 ? "" : tick)</span> (Comming from server via SignalR and eventbus)
 </p>
 <div class="input-group w-50">
     <input @bind=query.Search class="form-control" @bind:event="oninput" @onkeydown=Enter>
@@ -33,6 +39,20 @@
 @code {
     private GetUserDtosQuery query = new();
     private CustomGrid<UserDto, GetUserDtosQuery>? grid;
+    private int tick;
+    private Guid eventHandlerId;
+
+    protected override Task OnInitializedAsync()
+    {
+        eventHandlerId = events.Register<TickEvent>(UpdateTick);
+        return base.OnInitializedAsync();
+    }
+
+    private void UpdateTick(TickEvent e)
+    {
+        tick = e.Tick;
+        InvokeAsync(StateHasChanged);
+    }
 
     private async Task Enter(KeyboardEventArgs e)
     {
@@ -48,5 +68,10 @@
         {
             await grid.Update();
         }
+    }
+
+    public void Dispose()
+    {
+        events.Unregister(eventHandlerId);
     }
 }
