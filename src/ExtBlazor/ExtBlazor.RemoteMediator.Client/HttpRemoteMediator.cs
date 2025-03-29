@@ -22,23 +22,21 @@ public class HttpRemoteMediator(IHttpClientFactory httpClientFactory, HttpRemote
 
         var client = httpClientFactory.CreateClient(settings.HttpClientName);
         var response = await client.PostAsJsonAsync<TransportRequest>(settings.EndPointUrl, transportRequest, ct);
-        if (response.IsSuccessStatusCode)
-        {
-            var transportResult = await response.Content.ReadFromJsonAsync<TransportResponse>();
-            if (transportResult?.ErrorResponse is not null)
-            {
-                var error = transportResult?.ErrorResponse?.ToObject();
-                settings.ErrorHandler(error);
-                throw new Exception("Remote Mediator: Error handler did not throw an exception");
-            }
-            else
-            {
-                return transportResult?.Response?.ToObject();
-            }
-        }
-        else
+
+        if (!response.IsSuccessStatusCode)
         {
             throw new Exception("Remote Mediator http request returned status code: " + response.StatusCode);
         }
+
+        var transportResult = await response.Content.ReadFromJsonAsync<TransportResponse>();
+        if (transportResult?.ErrorResponse is null)
+        {
+            return transportResult?.Response?.ToObject();
+        }
+
+        // Handle Error
+        var error = transportResult?.ErrorResponse?.ToObject();
+        settings.ErrorHandler(error);
+        throw new Exception("Remote Mediator: Error handler did not throw an exception");
     }
 }

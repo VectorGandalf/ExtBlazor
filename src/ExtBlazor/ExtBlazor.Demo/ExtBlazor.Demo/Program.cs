@@ -6,7 +6,6 @@ using ExtBlazor.Events.SignalR.Server;
 using ExtBlazor.RemoteMediator.Server;
 using ExtBlazor.Stash;
 using MediatR;
-using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,7 +37,7 @@ builder.Services.AddMediatR(c =>
 
 builder.Services.AddRemoteMediatorServer(config =>
 {
-    config.MediatorCallback = async (IBaseRequest request, IMediator mediator) => await mediator.Send(request);
+    config.MediatorCallback = async (IBaseRequest request, IMediator mediator, CancellationToken ct) => await mediator.Send(request, ct);
 });
 
 builder.Services.AddStashService();
@@ -77,7 +76,7 @@ app.Run();
 
 static async Task UpdateDatabaseSchema(WebApplication app)
 {
-    var scope = app.Services.CreateAsyncScope();
+    using var scope = app.Services.CreateAsyncScope();
     var db = scope.ServiceProvider.GetService<ExDbContext>();
     if (db != null)
     {

@@ -5,7 +5,7 @@ public class HttpRemoteMediatorServer
 {
     public static async Task<TransportResponse> Handle([FromBody] TransportRequest transportRequest,
         HttpRemoteMediatorServerConfig config,
-        IServiceProvider serviceProvider,
+        IServiceScopeFactory serviceScopeFactory,
         CancellationToken ct)
     {
         var request = transportRequest.Request.ToObject();
@@ -16,7 +16,7 @@ public class HttpRemoteMediatorServer
         try
         {
             var processedRequest = config.RequestProcessor(request);
-            result = await MediatorInvoker.Invoke(processedRequest, config.MediatorCallback, serviceProvider, ct);
+            result = await MediatorInvoker.Invoke(processedRequest, config.MediatorCallback, serviceScopeFactory, ct);
             if (result is not null)
             {
                 result = config.RequestProcessor(result);

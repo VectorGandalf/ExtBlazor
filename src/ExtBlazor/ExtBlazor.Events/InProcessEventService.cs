@@ -1,9 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ExtBlazor.Events;
 
-public class InProcessEventService(IServiceProvider? serviceProvider = null) : IEventService
+public class InProcessEventService(IServiceScopeFactory? serviceScopeFactory = null) : IEventService
 {
     private ConcurrentDictionary<Guid, EventHandlerRegistration> eventHandlers = [];
 
@@ -14,7 +15,9 @@ public class InProcessEventService(IServiceProvider? serviceProvider = null) : I
 
         foreach (var eventHandler in matchingEventHandlers)
         {
-            var arguments = ResolveArguments(@event, eventHandler, eventTypes);
+            using var serviceScope = serviceScopeFactory?.CreateScope();
+
+            var arguments = ResolveArguments(@event, eventHandler, eventTypes, serviceScope?.ServiceProvider);
             eventHandler.DynamicInvoke(arguments);
         }
     }
@@ -37,7 +40,7 @@ public class InProcessEventService(IServiceProvider? serviceProvider = null) : I
         .Where(subscription => eventTypes.Contains(subscription.EventType))
         .Select(handler => handler.EventHandler);
 
-    private object[] ResolveArguments(IEvent @event, Delegate eventHandler, Type[] eventTypes)
+    private object[] ResolveArguments(IEvent @event, Delegate eventHandler, Type[] eventTypes, IServiceProvider? serviceProvider)
     {
         List<object> arguments = [];
         var methodInfo = eventHandler.GetMethodInfo();
@@ -51,31 +54,41 @@ public class InProcessEventService(IServiceProvider? serviceProvider = null) : I
             }
             else
             {
-                if (serviceProvider != null)
-                {
-                    var argument = serviceProvider.GetService(parameterType);
-                    arguments.Add(argument ?? new ArgumentNullException(GetType().Name + " Could not resolve dependency " + parameterType.Name));
-                }
-                else
-                {
-                    throw new ArgumentNullException(GetType().Name + " serviceProvider null constructor argument!");
-                }
+                var argument = ResolveSeviceArgument(parameterType, serviceProvider);
+                arguments.Add(argument);
             }
         }
 
         return arguments.ToArray();
     }
 
+    private object ResolveSeviceArgument(Type parameterType, IServiceProvider? serviceProvider
+        )
+    {
+        if (serviceProvider is null)
+        {
+            throw new ArgumentNullException("Could not resolve " + GetType().Name + ". serviceProvider argument is null!");
+        }
+
+        var argument = serviceProvider.GetService(parameterType);
+        if (argument is null)
+        {
+            throw new ArgumentNullException(GetType().Name + " Could not resolve dependency " + parameterType.Name);
+        }
+
+        return argument;
+    }
+
     private static IEnumerable<Type> ExtractTypesImplementingIEvent(IEvent @event)
         => GetInterfaces(@event)
-        .Concat([@event.GetType()])
-        .Concat(GetBaseTypes(@event));
+            .Concat([@event.GetType()])
+            .Concat(GetBaseTypes(@event));
 
     private static IEnumerable<Type> GetInterfaces(IEvent @event)
     {
         return @event.GetType()
-                .GetInterfaces()
-                .Where(type => type.GetInterfaces().Contains(typeof(IEvent)) || type.Equals(typeof(IEvent)));
+            .GetInterfaces()
+            .Where(type => type.GetInterfaces().Contains(typeof(IEvent)) || type.Equals(typeof(IEvent)));
     }
 
     private static IEnumerable<Type> GetBaseTypes(IEvent @event)

@@ -7,10 +7,12 @@ public static class MediatorInvoker
     public static async Task<object?> Invoke(
         object request,
         Delegate mediatorCallback,
-        IServiceProvider serviceProvider,
+        IServiceScopeFactory serviceScopeFactory,
         CancellationToken ct = default)
     {
-        var arguments = ResolveArguments(request, mediatorCallback, serviceProvider);
+        using var serviceScope = serviceScopeFactory.CreateScope();
+
+        var arguments = ResolveArguments(request, mediatorCallback, serviceScope.ServiceProvider, ct);
         if (mediatorCallback.Method.ReturnType.IsSubclassOf(typeof(Task)) && mediatorCallback.Method.ReturnType.IsConstructedGenericType)
         {
             var task = (Task<object?>?)mediatorCallback.DynamicInvoke(arguments);

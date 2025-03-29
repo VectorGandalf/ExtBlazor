@@ -2,7 +2,7 @@
 
 public class LocalRemoteMediator(
     HttpRemoteMediatorServerConfig config,
-    IServiceProvider serviceProvider) : IRemoteMediator
+    IServiceScopeFactory serviceScopeFactory) : IRemoteMediator
 {
     public async Task<TResult?> Send<TResult>(IRemoteRequest<TResult> request, CancellationToken ct = default)
     {
@@ -11,7 +11,7 @@ public class LocalRemoteMediator(
         var result = (TResult?)await MediatorInvoker.Invoke(
             processedRequest,
             config.MediatorCallback,
-            serviceProvider,
+            serviceScopeFactory,
             ct);
         if (result != null)
         {
@@ -28,7 +28,7 @@ public class LocalRemoteMediator(
         await MediatorInvoker.Invoke(
             processedRequest,
             config.MediatorCallback,
-            serviceProvider,
+            serviceScopeFactory,
             ct);
     }
 }

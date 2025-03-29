@@ -78,7 +78,7 @@ public class InProcessEventServiceTests
 
         int effect = 0;
 
-        IEventService eventService = new InProcessEventService(serviceProvider);
+        IEventService eventService = new InProcessEventService(new TestServiceScopeFactory(serviceProvider));
 
         _ = eventService.Register<CustomEvent2>((CustomEvent2 customEvent, TestService testService) => effect = testService.Value);
 
@@ -101,7 +101,7 @@ public class InProcessEventServiceTests
         int effect1 = 0;
         int effect2 = 0;
 
-        IEventService eventService = new InProcessEventService(serviceProvider);
+        IEventService eventService = new InProcessEventService(new TestServiceScopeFactory(serviceProvider));
 
         _ = eventService.Register<CustomEvent>((TestService testService, TestService2 testService2) =>
         {
@@ -221,4 +221,9 @@ public class TestService2
 {
     private int hiddenValue = 5;
     public int GetHiddenValue() => hiddenValue;
+}
+
+public class TestServiceScopeFactory(IServiceProvider provider) : IServiceScopeFactory
+{
+    public IServiceScope CreateScope() => provider.CreateScope();
 }
