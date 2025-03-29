@@ -14,9 +14,9 @@ public class RemoteMediatorTests(WebApplicationFactory<Program> factory) : IClas
         var httpClient = factory.CreateClient();
         var httpClientFactory = new FakeHttpClientFactory(httpClient);
         var remoteMediator = new HttpRemoteMediator(httpClientFactory, new());
-        await remoteMediator.Send(new CreateObjectCommand(1, "Test object"));
 
         // Act
+        await remoteMediator.Send(new CreateObjectCommand(1, "Test object"));
         var objects = await remoteMediator.Send(new GetObjectsQuery());
 
         // Assert

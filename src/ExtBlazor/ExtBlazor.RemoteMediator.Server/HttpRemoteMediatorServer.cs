@@ -11,15 +11,15 @@ public class HttpRemoteMediatorServer
         var request = transportRequest.Request.ToObject();
 
         _ = config.MediatorCallback ?? throw new NoMediatorCallbackException();
-        object? error = null;
         object? result = null;
+        object? error = null;
         try
         {
             var processedRequest = config.RequestProcessor(request);
             result = await MediatorInvoker.Invoke(processedRequest, config.MediatorCallback, serviceScopeFactory, ct);
             if (result is not null)
             {
-                result = config.RequestProcessor(result);
+                result = config.ResponseProcessor(result);
             }
         }
         catch (Exception exception)

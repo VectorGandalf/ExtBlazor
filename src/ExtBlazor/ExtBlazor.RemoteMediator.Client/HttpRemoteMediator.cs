@@ -29,14 +29,13 @@ public class HttpRemoteMediator(IHttpClientFactory httpClientFactory, HttpRemote
         }
 
         var transportResult = await response.Content.ReadFromJsonAsync<TransportResponse>();
-        if (transportResult?.ErrorResponse is null)
+        if (transportResult?.ErrorResponse is not null)
         {
-            return transportResult?.Response?.ToObject();
+            var error = transportResult?.ErrorResponse?.ToObject();
+            settings.ErrorHandler(error);
+            throw new Exception("Remote Mediator: Error handler did not throw an exception");
         }
 
-        // Handle Error
-        var error = transportResult?.ErrorResponse?.ToObject();
-        settings.ErrorHandler(error);
-        throw new Exception("Remote Mediator: Error handler did not throw an exception");
+        return transportResult?.Response?.ToObject();
     }
 }
