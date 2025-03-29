@@ -1,1 +1,2 @@
-ExtBlazor.Grid is a cool Data Grid made right
+# ExtBlazor.Grid
+ExtBlazor.Grid is a Blazor Grid component.

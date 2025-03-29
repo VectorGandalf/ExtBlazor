@@ -2,10 +2,20 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<ImplicitUsings>enable</ImplicitUsings>		
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>Extendable Blazor Grid</Title>
-		<PackageReadmeFile>readme.md</PackageReadmeFile>
+		<Description>Extendable Blazor Grid Component.</Description>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>		
+		<Copyright>Daniel Johansson</Copyright>
+		<RepositoryUrl>https://github.com/VectorGandalf/ExtBlazor</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>Blazor</PackageTags>
+		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<FileVersion>$(AssemblyVersion)</FileVersion>
+		<VersionPrefix>$(AssemblyVersion)</VersionPrefix>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="wwwroot\**" />
@@ -19,6 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="ExtBlazor.Core" Version="1.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.11" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.11" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
@@ -26,9 +37,5 @@
 
 	<ItemGroup>
 		<None Include="readme.md" Pack="true" PackagePath="" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\ExtBlazor.Core\ExtBlazor.Core.csproj" />
 	</ItemGroup>
 </Project>

@@ -42,7 +42,7 @@
 
 	protected override Task OnInitializedAsync()
 	{
-		events.Register<TickEvent>(UpdateTick);
+		eventHandlerId = events.Register<TickEvent>(UpdateTick);
 		return base.OnInitializedAsync();
 	}
 
