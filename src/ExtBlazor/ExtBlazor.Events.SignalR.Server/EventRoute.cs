@@ -1,4 +1,4 @@
-﻿namespace ExtBlazor.Events
+﻿namespace ExtBlazor.Events.SignalR.Server
 {
     public class EventRoute
     {
