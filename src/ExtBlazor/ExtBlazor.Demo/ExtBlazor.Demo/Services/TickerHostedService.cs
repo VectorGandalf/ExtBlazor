@@ -1,24 +1,22 @@
-﻿using System.Threading;
-using ExtBlazor.Demo.Client.Models;
-using ExtBlazor.Events;
+﻿using ExtBlazor.Demo.Client.Models;
+using ExtBlazor.Events.SignalR.Server;
 
 namespace ExtBlazor.Demo.Services
 {
-    public class TickerHostedService(IEventService eventService) : IHostedService, IDisposable
+    public class TickerHostedService(IEventPublisher eventBus) : IHostedService, IDisposable
     {
         private int tick = 0;
         private Timer? timer = null;
-
         public Task StartAsync(CancellationToken stoppingToken)
         {
-            timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(0.5));
+            timer = new Timer(async _ => await DoWork(stoppingToken), null, TimeSpan.Zero, TimeSpan.FromMilliseconds(50));
             return Task.CompletedTask;
         }
 
-        private void DoWork(object? state)
+        private async Task DoWork(CancellationToken stoppingToken)
         {
             Interlocked.Increment(ref tick);
-            eventService.Handle(new TickEvent(tick));            
+            await eventBus.Publish(new TickEvent(tick), stoppingToken);
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

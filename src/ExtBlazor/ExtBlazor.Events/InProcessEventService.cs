@@ -22,7 +22,7 @@ public class InProcessEventService(IServiceScopeFactory? serviceScopeFactory = n
         }
     }
 
-    public Guid Register<TEvent>(Delegate eventHandler) where TEvent : IEvent
+    public Guid Subscribe<TEvent>(Delegate eventHandler) where TEvent : IEvent
     {
         var id = Guid.NewGuid();
         var handler = new EventHandlerRegistration(typeof(TEvent), eventHandler);
@@ -30,7 +30,7 @@ public class InProcessEventService(IServiceScopeFactory? serviceScopeFactory = n
         return id;
     }
 
-    public void Unregister(Guid subscriptionId)
+    public void Unsubscribe(Guid subscriptionId)
     {
         eventHandlers.Remove(subscriptionId, out var _);
     }

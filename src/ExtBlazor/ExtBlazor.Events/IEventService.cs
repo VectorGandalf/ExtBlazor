@@ -1,7 +1,7 @@
 ﻿namespace ExtBlazor.Events;
 public interface IEventService
 {
-    Guid Register<TEvent>(Delegate eventHandler) where TEvent : IEvent;
-    void Unregister(Guid eventHandlerId);
+    Guid Subscribe<TEvent>(Delegate eventHandler) where TEvent : IEvent;
+    void Unsubscribe(Guid eventHandlerId);
     void Handle(IEvent @event);
 }

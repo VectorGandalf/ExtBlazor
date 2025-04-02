@@ -1,7 +1,5 @@
-﻿namespace ExtBlazor.Events.SignalR.Server
+﻿namespace ExtBlazor.Events.SignalR.Server;
+public class EventRouterConfiguration
 {
-    public class EventRouterConfiguration
-    {
-        public Func<IEvent, EventRoute>? EventRouter { get; set; }
-    }
+    public Func<IEvent, EventRoute>? EventRouter { get; set; }
 }
