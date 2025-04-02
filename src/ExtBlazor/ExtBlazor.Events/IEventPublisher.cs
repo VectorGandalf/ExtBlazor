@@ -1,8 +1,6 @@
-﻿
-namespace ExtBlazor.Events.SignalR.Server
+﻿namespace ExtBlazor.Events.SignalR.Server;
+
+public interface IEventPublisher
 {
-    public interface IEventPublisher
-    {
-        ValueTask Publish(IEvent @event, CancellationToken ct = default);
-    }
+    ValueTask Publish(IEvent @event, CancellationToken ct = default);
 }

@@ -1,5 +1,4 @@
-﻿using System.Threading.Channels;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 
 namespace ExtBlazor.Events.SignalR.Server;
 public static partial class IServiceCollectionExtensions
@@ -14,13 +13,7 @@ public static partial class IServiceCollectionExtensions
             Path = options.SignalRHubPath
         });
 
-        var channelOptions = options.ChannelOptions ?? new BoundedChannelOptions(10)
-        {
-            AllowSynchronousContinuations = false,
-            FullMode = BoundedChannelFullMode.Wait,
-            SingleReader = true,
-            SingleWriter = false
-        };
+        var channelOptions = options.ChannelOptions ?? options.DefaultChannelOptions;
 
         services.AddSingleton<IEventPublisher, ChannelEventPublisher>(c => new ChannelEventPublisher(channelOptions));
         services.AddSingleton<IEventService, InProcessEventService>();

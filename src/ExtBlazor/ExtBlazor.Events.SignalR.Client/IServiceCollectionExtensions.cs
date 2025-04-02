@@ -6,8 +6,8 @@ namespace ExtBlazor.Events.SignalR.Client;
 public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddSignalREventServiceClient(
-        this IServiceCollection services,        
-        string signalRHubPath = "/eventhub",
+        this IServiceCollection services,
+        string signalRHubPath = EventHubPathConfiguration.DEFAULT_PATH,
         Func<Uri, HubConnectionBuilder>? hubConnectionBuilder = null)
     {
         var hubBuilderConfiguration = new EventsHubConnectionBuilder();
@@ -15,7 +15,7 @@ public static class IServiceCollectionExtensions
         {
             hubBuilderConfiguration.Builder = hubConnectionBuilder;
         }
-        
+
         services.AddScoped<EventsHubConnectionBuilder>(_ => hubBuilderConfiguration);
         if (System.OperatingSystem.IsBrowser())
         {
@@ -25,7 +25,7 @@ public static class IServiceCollectionExtensions
                 Path = signalRHubPath
             });
         }
-        
+
         return services;
     }
 }
