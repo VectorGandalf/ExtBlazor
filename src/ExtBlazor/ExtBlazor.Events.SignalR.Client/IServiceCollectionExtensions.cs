@@ -20,9 +20,9 @@ public static class IServiceCollectionExtensions
         if (System.OperatingSystem.IsBrowser())
         {
             services.AddScoped<IEventService, InProcessEventService>();
-            services.AddSingleton(new EventListenerConfiguration
+            services.AddSingleton(new EventHubPathConfiguration
             {
-                SignalRHubPath = signalRHubPath
+                Path = signalRHubPath
             });
         }
         

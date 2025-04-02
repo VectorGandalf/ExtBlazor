@@ -1,3 +1,4 @@
+using ExtBlazor.Demo;
 using ExtBlazor.Demo.Components;
 using ExtBlazor.Demo.Database;
 using ExtBlazor.Demo.Services;
@@ -13,10 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 var hubBuilderConfiguration = new EventsHubConnectionBuilder();
 
 builder.Services.AddHostedService<TickerHostedService>();
-builder.Services.AddSignalREventService();
+
+builder.Services
+    .AddSignalREventService(new() { EventRouter = EventsConfiguration.EventRouter })
+    .AddHubOptions<EventHub>(EventsConfiguration.HubOptions);
+
 builder.Services.AddSignalREventServiceClient();
 
-// Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
@@ -52,7 +56,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

@@ -12,7 +12,7 @@ public class InProcessEventServiceTests
         IEventService eventService = new InProcessEventService();
 
         //Act
-        var handlerId = eventService.Register<IEvent>(() => { });
+        var handlerId = eventService.Subscribe<IEvent>(() => { });
 
         //Assert
         Assert.NotEqual(Guid.Empty, handlerId);
@@ -26,7 +26,7 @@ public class InProcessEventServiceTests
 
         IEventService eventService = new InProcessEventService();
 
-        _ = eventService.Register<CustomEvent>(() => effect = 2);
+        _ = eventService.Subscribe<CustomEvent>(() => effect = 2);
 
         //Act
         eventService.Handle(new CustomEvent());
@@ -42,7 +42,7 @@ public class InProcessEventServiceTests
         var effect = 1;
         IEventService eventService = new InProcessEventService();
 
-        _ = eventService.Register<CustomEvent>(async () => { effect = 2; await Task.CompletedTask; });
+        _ = eventService.Subscribe<CustomEvent>(async () => { effect = 2; await Task.CompletedTask; });
 
         //Act
         eventService.Handle(new CustomEvent());
@@ -59,7 +59,7 @@ public class InProcessEventServiceTests
 
         IEventService eventService = new InProcessEventService();
 
-        _ = eventService.Register<CustomEvent2>((CustomEvent2 customEvent) => effect = customEvent.Id);
+        _ = eventService.Subscribe<CustomEvent2>((CustomEvent2 customEvent) => effect = customEvent.Id);
 
         //Act
         eventService.Handle(new CustomEvent2(2));
@@ -80,7 +80,7 @@ public class InProcessEventServiceTests
 
         IEventService eventService = new InProcessEventService(new TestServiceScopeFactory(serviceProvider));
 
-        _ = eventService.Register<CustomEvent2>((CustomEvent2 customEvent, TestService testService) => effect = testService.Value);
+        _ = eventService.Subscribe<CustomEvent2>((CustomEvent2 customEvent, TestService testService) => effect = testService.Value);
 
         //Act
         eventService.Handle(new CustomEvent2(2));
@@ -103,7 +103,7 @@ public class InProcessEventServiceTests
 
         IEventService eventService = new InProcessEventService(new TestServiceScopeFactory(serviceProvider));
 
-        _ = eventService.Register<CustomEvent>((TestService testService, TestService2 testService2) =>
+        _ = eventService.Subscribe<CustomEvent>((TestService testService, TestService2 testService2) =>
         {
             effect1 = testService.Value;
             effect2 = testService2.GetHiddenValue();
@@ -124,7 +124,7 @@ public class InProcessEventServiceTests
         int effect = 0;
         IEventService eventService = new InProcessEventService();
 
-        _ = eventService.Register<IEvent>(() => effect = 99);
+        _ = eventService.Subscribe<IEvent>(() => effect = 99);
 
         //Act
         eventService.Handle(new CustomEvent());
@@ -141,7 +141,7 @@ public class InProcessEventServiceTests
 
         IEventService eventService = new InProcessEventService();
 
-        _ = eventService.Register<ICustomEvent>(() => effect = 98);
+        _ = eventService.Subscribe<ICustomEvent>(() => effect = 98);
 
         //Act
         eventService.Handle(new CustomEvent());
@@ -158,7 +158,7 @@ public class InProcessEventServiceTests
 
         IEventService eventService = new InProcessEventService();
 
-        _ = eventService.Register<SuperEvent>(() => effect = 94);
+        _ = eventService.Subscribe<SuperEvent>(() => effect = 94);
 
         //Act
         eventService.Handle(new CustomEvent());
@@ -175,10 +175,10 @@ public class InProcessEventServiceTests
 
         IEventService eventService = new InProcessEventService();
 
-        var handlerId = eventService.Register<CustomEvent>(() => effect = 100);
+        var handlerId = eventService.Subscribe<CustomEvent>(() => effect = 100);
 
         //Act
-        eventService.Unregister(handlerId);
+        eventService.Unsubscribe(handlerId);
         eventService.Handle(new CustomEvent());
 
         //Assert
@@ -194,8 +194,8 @@ public class InProcessEventServiceTests
 
         IEventService eventService = new InProcessEventService();
 
-        _ = eventService.Register<CustomEvent>(() => effect1 = 4);
-        _ = eventService.Register<CustomEvent>(() => effect2 = 5);
+        _ = eventService.Subscribe<CustomEvent>(() => effect1 = 4);
+        _ = eventService.Subscribe<CustomEvent>(() => effect2 = 5);
 
         //Act
         eventService.Handle(new CustomEvent());

@@ -15,7 +15,7 @@ public class EventListener() :
     public required IEventService EventService { get; set; }
 
     [Inject]
-    public required EventListenerConfiguration Configuration { get; set; }
+    public required EventHubPathConfiguration Configuration { get; set; }
 
     [Inject]
     public required EventsHubConnectionBuilder HubConnectionBuilder { get; set; }
@@ -25,8 +25,8 @@ public class EventListener() :
     protected override async Task OnInitializedAsync()
     {
         if (OperatingSystem.IsBrowser())
-        {            
-            var uri = Navigation.ToAbsoluteUri(Configuration.SignalRHubPath);
+        {
+            var uri = Navigation.ToAbsoluteUri(Configuration.Path);
             hubConnection = HubConnectionBuilder.Builder(uri)
                 .Build();
 

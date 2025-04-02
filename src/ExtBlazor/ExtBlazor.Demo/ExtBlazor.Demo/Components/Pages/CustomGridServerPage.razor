@@ -44,7 +44,7 @@
 
     protected override Task OnInitializedAsync()
     {
-        eventHandlerId = events.Register<TickEvent>(UpdateTick);
+        eventHandlerId = events.Subscribe<TickEvent>(UpdateTick);
         return base.OnInitializedAsync();
     }
 
@@ -72,6 +72,6 @@
 
     public void Dispose()
     {
-        events.Unregister(eventHandlerId);
+        events.Unsubscribe(eventHandlerId);
     }
 }
